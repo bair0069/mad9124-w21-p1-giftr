@@ -3,11 +3,24 @@
   "version": "0.1.0",
   "description": "",
   "main": "server.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "authors": "Kiefer Baird-Perry <bair0069@algonquinlive.com> && Akshay Mahajan <maha0134@algonquinlive.com>",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.3",
+    "express-mongo-sanitize": "^2.2.0",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.9",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "validator": "^13.7.0",
+    "winston": "^3.6.0",
+    "xss": "^1.0.11"
+  }
 }

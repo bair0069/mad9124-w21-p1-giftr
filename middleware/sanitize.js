@@ -1,14 +1,37 @@
-//TODO:
 
-//import xss from 'xss';
+
+import xss from 'xss';
 
 // define sanitize function
+const sanitize = (source) =>{
+  return xss(source,{
+    whiteList: [],
+    stripIgnoreTag: true,
+    stripIgnoreTagBody: ['script']
+  })
+};
+// define stripTags(payload) function <--- Created this using forEach instead of For loop different than notes.
 
-// define stripTags(payload) function
+const stripTags = (payload) => {
+  const attributes = Object.assign({}, payload);
+  Object.keys(attributes).forEach((key) => {
+    if(key instanceof Array){
+      key.map((item) => {
+        if (typeof item === 'string') {
+          return sanitize(element)}
+        });
+      } else if (key instanceof Object) {
+        key = stripTags(key);}
+      else { return sanitize(key);
+      }
+    })
+    return attributes;
+};
 
-// export sanitize function sanitizeBody (req, res, next) {
-// const {id, _id, ...attributes} = req.body?.data?.attributes;
-//req.sanitizedBody = {stripTags(attributes)};
 
-//next()
-//}
+export default function sanitizeBody (req, res, next) {
+const {id, _id, ...attributes} = req.body?.data?.attributes;
+req.sanitizedBody = stripTags(attributes);
+
+next()
+}
