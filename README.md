@@ -8,7 +8,6 @@ The final project will be a two part joint assignment between MAD9124 and MAD902
 
 ## Logistics
 
-- Clone this repo to your latptop.
 - Update the `package.json` file.
 - Install dependencies with NPM.
 - Build the project on your laptop.
