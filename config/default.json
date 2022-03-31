@@ -1,0 +1,11 @@
+{
+  "name": "mad9124-w21-p1-giftr",
+  "db": {
+    "host": "localhost",
+    "port": "27017",
+    "dbName": "giftr-db"
+  },
+  "jwt": {
+    "saltRounds": 14
+  }
+}
