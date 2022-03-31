@@ -13,26 +13,22 @@ const sanitize = (source) =>{
 // define stripTags(payload) function <--- Created this using forEach instead of For loop different than notes.
 
 const stripTags = (payload) => {
-  const attributes = Object.assign({}, payload);
-  Object.keys(attributes).forEach((key) => {
-    if(key instanceof Array){
-      key.map((item) => {
-        if (typeof item === 'string') {
-          return sanitize(element)}
-        });
-      } else if (key instanceof Object) {
-        key = stripTags(key);}
-      else { return sanitize(key);
-      }
-    })
-    return attributes;
-};
+    let attributes = {...payload}
+    for (let key in attributes) {
+      attributes[key] = xss(attributes[key], {
+        whiteList: [],
+        stripIgnoreTag: true,
+        stripIgnoreTagBody: ['script']
+      })
+    }
+    return attributes
+  };
 
 
-export default function (req, res, next) {
-console.log(req.body);
+export default async function (req, res, next) {
+
 const {id, _id, ...attributes} = req.body?.data?.attributes;
-req.sanitizedBody = stripTags(attributes);
-
+req.sanitizedBody =  await stripTags(attributes);
+console.log(req.sanitizedBody)
 next()
 }

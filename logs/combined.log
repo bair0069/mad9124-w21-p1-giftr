@@ -418,3 +418,63 @@
 {"level":"info","message":"Connected to MongoDB","service":"giftr"}
 {"level":"info","message":"Listening on port 3030","service":"giftr"}
 {"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"kind":"date","message":"Cast to date failed for value \"<script>console.log(bums)</script>\" (type string) at path \"birthDate\"","name":"CastError","path":"birthDate","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"<script>console.log(bums)</script>\"","value":"<script>console.log(bums)</script>","valueType":"string"}
+{"_message":"Person validation failed","errors":{"birthDate":{"kind":"date","message":"Cast to date failed for value \"08/16/1993<script>console.log(bums)</script>\" (type string) at path \"birthDate\"","name":"CastError","path":"birthDate","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"08/16/1993<script>console.log(bums)</script>\"","value":"08/16/1993<script>console.log(bums)</script>","valueType":"string"}},"level":"error","message":"Person validation failed: birthDate: Cast to date failed for value \"08/16/1993<script>console.log(bums)</script>\" (type string) at path \"birthDate\"","name":"ValidationError","service":"giftr"}
+{"_message":"Person validation failed","errors":{"birthDate":{"kind":"date","message":"Cast to date failed for value \"08/16/1993<script>console.log(bums)</script>\" (type string) at path \"birthDate\"","name":"CastError","path":"birthDate","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"08/16/1993<script>console.log(bums)</script>\"","value":"08/16/1993<script>console.log(bums)</script>","valueType":"string"}},"level":"error","message":"Person validation failed: birthDate: Cast to date failed for value \"08/16/1993<script>console.log(bums)</script>\" (type string) at path \"birthDate\"","name":"ValidationError","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"_message":"Person validation failed","errors":{"imageUrl":{"kind":"required","message":"Path `imageUrl` is required.","name":"ValidatorError","path":"imageUrl","properties":{"message":"Path `imageUrl` is required.","path":"imageUrl","type":"required","value":""},"value":""}},"level":"error","message":"Person validation failed: imageUrl: Path `imageUrl` is required.","name":"ValidationError","service":"giftr"}
+{"_message":"Person validation failed","errors":{"imageUrl":{"kind":"required","message":"Path `imageUrl` is required.","name":"ValidatorError","path":"imageUrl","properties":{"message":"Path `imageUrl` is required.","path":"imageUrl","type":"required","value":""},"value":""}},"level":"error","message":"Person validation failed: imageUrl: Path `imageUrl` is required.","name":"ValidationError","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"_message":"Person validation failed","errors":{"imageUrl":{"kind":"required","message":"Path `imageUrl` is required.","name":"ValidatorError","path":"imageUrl","properties":{"message":"Path `imageUrl` is required.","path":"imageUrl","type":"required","value":""},"value":""}},"level":"error","message":"Person validation failed: imageUrl: Path `imageUrl` is required.","name":"ValidationError","service":"giftr"}
