@@ -2,6 +2,8 @@
 import express from 'express';
 import Gift from "../models/Gift.js";
 import sanitize from "../middleware/sanitize.js";
+import log from '../startup/logger.js';
+
 //TODO:import authentication middleware , use it in the methods below
 import mongoose from 'mongoose'
 
@@ -95,7 +97,9 @@ function sendResourceNotFound(req, res) {
       {
         status: 404,
         title: "Resource Not Found",
-        detail: "The gift with {req.params.id} was not found.",
+
+        detail: `The gift with ${req.params.id} was not found.`,
+
       },
     ],
   });
