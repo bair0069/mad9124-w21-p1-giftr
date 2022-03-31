@@ -30,4 +30,10 @@ const schema = new mongoose.Schema(
   {strict:true,timestamps: true, versionKey: false,}
 );
 
+schema.pre('save',async function(next){
+  this.createdAt = Date.now();
+  this.updatedAt = Date.now();
+  next();
+})
+
 export default mongoose.model("Person", schema);
