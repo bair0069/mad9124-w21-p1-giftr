@@ -1,14 +1,15 @@
-import server from 'http' 
+import http from 'http' 
 import app from './app.js'
-// import winston || debug
+import log from './startup/logger.js'
 
 // DEBUG || WINSTON
 
 // SERVER
-const server = http.createServer(app);
-
+const httpServer = http.createServer(app);
 // PORT
 const port = process.env.PORT || 3030;
 httpServer.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  log.info(`Listening on port ${port}`);
 });
+
+

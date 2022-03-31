@@ -11,17 +11,16 @@ import mongoose from "mongoose";
 const schema = new mongoose.Schema(
   {
     name: { type: String, required: true, maxlength: 254 },
-    birthDate: { type: Date, required: true },
+    birthDate: { type: String /* string for now should be date*/, required: true },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: false, // <--- this should be true  - - - the owner is required
     },
-    sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],// shared with what users?
     gifts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Gift" }],
     imageUrl: { type: String, required: true, maxlength: 1024 },
-  },
-  { timestamps: true }
+  }
 );
 
 export default mongoose.model("Person", schema);

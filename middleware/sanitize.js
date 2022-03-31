@@ -29,7 +29,8 @@ const stripTags = (payload) => {
 };
 
 
-export default function sanitizeBody (req, res, next) {
+export default function (req, res, next) {
+console.log(req.body);
 const {id, _id, ...attributes} = req.body?.data?.attributes;
 req.sanitizedBody = stripTags(attributes);
 
