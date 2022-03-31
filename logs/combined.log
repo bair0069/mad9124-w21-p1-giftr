@@ -478,3 +478,31 @@
 {"level":"info","message":"Listening on port 3030","service":"giftr"}
 {"level":"info","message":"Connected to MongoDB","service":"giftr"}
 {"_message":"Person validation failed","errors":{"imageUrl":{"kind":"required","message":"Path `imageUrl` is required.","name":"ValidatorError","path":"imageUrl","properties":{"message":"Path `imageUrl` is required.","path":"imageUrl","type":"required","value":""},"value":""}},"level":"error","message":"Person validation failed: imageUrl: Path `imageUrl` is required.","name":"ValidationError","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"_message":"Gift validation failed","errors":{"name":{"kind":"minlength","message":"Path `name` (`Box`) is shorter than the minimum allowed length (4).","name":"ValidatorError","path":"name","properties":{"message":"Path `name` (`Box`) is shorter than the minimum allowed length (4).","minlength":4,"path":"name","type":"minlength","value":"Box"},"value":"Box"}},"level":"error","message":"Gift validation failed: name: Path `name` (`Box`) is shorter than the minimum allowed length (4).","name":"ValidationError","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"6\" (type string) at path \"_id\" for model \"Person\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"6\"","value":"6","valueType":"string"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB","service":"giftr"}
