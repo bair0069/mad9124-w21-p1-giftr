@@ -17,10 +17,8 @@ console.log(router)
 // Add a GET route to get all people
 
 router.get('/', async (req, res) => {
-    // console.log(router)
-    // const people = Person.find();
-    await log.info("This is working")
-    // res.send({});
+    const people = await Person.find();
+    res.send({ data: formatResponseData(people) });
   }
 );
 
