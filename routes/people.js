@@ -1,6 +1,6 @@
 /**TODO:
-* restore commented out gifts once we have gifts... in get:ID method
-*/
+ * restore commented out gifts once we have gifts... in get:ID method
+ */
 
 import express from "express";
 import Person from "../models/Person.js";
@@ -16,22 +16,23 @@ const router = express.Router();
 
 // Add a GET route to get all people
 
-router.get('/', async (req, res) => {
-    const people = await Person.find();
-    res.status(201).send({ data: formatResponseData(people) });
-  }
-);
+router.get("/", async (req, res) => {
+  const people = await Person.find();
+  res.status(201).send({ data: formatResponseData(people) });
+});
 
 // Add a GET/:ID route to get a single person by ID and populate the gifts array
 
 router.get(
   "/:id",
   /*auth,*/ async (req, res) => {
-    const person = await Person.findById(req.params.id)//.populate("gifts") ;
-    if (person) {
-      res.send({ data: formatResponseData(person)});
-    } else {
-      sendResourceNotFound(req, res);
+    if (validateID(req.params.id)) {
+      const person = await Person.findById(req.params.id); //.populate("gifts") ;
+      if (person) {
+        res.send({ data: formatResponseData(person) });
+      } else {
+        sendResourceNotFound(req, res);
+      }
     }
   }
 );
@@ -39,40 +40,42 @@ router.get(
 // Add a POST route to create a new person
 
 router.post("/", sanitize, async (req, res) => {
-    const newPerson = new Person(req.sanitizedBody);
-    try {
-      await newPerson.save();
-      res.status(201).json({data:formatResponseData(newPerson)});
-    } catch (err) {
-      log.error(err);
-      res.status(500).send({
-        errors: [
-          {
-            status: 500,
-            title: "Internal Server Error",
-            detail: "An error occurred while creating the person.",
-          },
-        ],
-      });
-    }
+  const newPerson = new Person(req.sanitizedBody);
+  try {
+    await newPerson.save();
+    res.status(201).json({ data: formatResponseData(newPerson) });
+  } catch (err) {
+    log.error(err);
+    res.status(500).send({
+      errors: [
+        {
+          status: 500,
+          title: "Internal Server Error",
+          detail: "An error occurred while creating the person.",
+        },
+      ],
+    });
   }
-);
+});
 
 //UPDATE
-const update = (overwrite = false) => 
+const update =
+  (overwrite = false) =>
   async (req, res) => {
-    try {
-      const object = await Person.findByIdAndUpdate(
-        req.params.id,
-        req.sanitizedBody,
-        { new: true, overwrite, runValidators: true }
-      );
-      if (!object)
-        throw new Error("Could not find a person with id: " + req.params.id);
-      res.send({ data: formatResponseData(object) });
-    } catch (err) {
-      log.error(err);
-      sendResourceNotFound(req, res);
+    if (validateID(req.params.id)) {
+      try {
+        const object = await Person.findByIdAndUpdate(
+          req.params.id,
+          req.sanitizedBody,
+          { new: true, overwrite, runValidators: true }
+        );
+        if (!object)
+          throw new Error("Could not find a person with id: " + req.params.id);
+        res.send({ data: formatResponseData(object) });
+      } catch (err) {
+        log.error(err);
+        sendResourceNotFound(req, res);
+      }
     }
   };
 
@@ -88,13 +91,15 @@ router.put("/:id", sanitize, /*auth,*/ update(true));
 router.delete(
   "/:id",
   /*auth,isOwner,*/ async (req, res) => {
-    try {
-      const person = await Person.findByIdAndRemove(req.params.id);
-      if (!person) throw new Error("Person not found");
-      res.send({ data: formatResponseData(person) });
-    } catch (err) {
-      log.error(err);
-      sendResourceNotFound(req, res);
+    if (validateID(req.params.id)) {
+      try {
+        const person = await Person.findByIdAndRemove(req.params.id);
+        if (!person) throw new Error("Person not found");
+        res.send({ data: formatResponseData(person) });
+      } catch (err) {
+        log.error(err);
+        sendResourceNotFound(req, res);
+      }
     }
   }
 );
@@ -130,7 +135,7 @@ function sendResourceNotFound(req, res) {
       {
         status: 404,
         title: "Resource Not Found",
-        detail: "The person with {req.params.id} was not found.",
+        detail: `The person with ${req.params.id} was not found.`,
       },
     ],
   });
