@@ -7,7 +7,6 @@ import peopleRouter from './routes/people.js';
 // import authRouter from './routes/auth/user.js';
 
 // connect to mongoDB
-console.log("app is working")
 connect();
 // define app
 const app = express();

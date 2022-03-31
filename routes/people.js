@@ -1,15 +1,15 @@
-//TODO:
+/**TODO:
+* restore commented out gifts once we have gifts, in get:ID
+*/
 
 import express from "express";
 import Person from "../models/Person.js";
 import sanitize from "../middleware/sanitize.js";
+import mongoose from "mongoose";
 // import isOwner from "../middleware/isOwner.js";
 // import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
 const router = express.Router();
-
-console.log(router)
-
 
 //The client application must send a valid JWT in the Authorization header property for all /api routes.
 // users should only be able to interact with their own people
@@ -18,7 +18,7 @@ console.log(router)
 
 router.get('/', async (req, res) => {
     const people = await Person.find();
-    res.send({ data: formatResponseData(people) });
+    res.status(201).send({ data: formatResponseData(people) });
   }
 );
 
@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
 router.get(
   "/:id",
   /*auth,*/ async (req, res) => {
-    const person = await Person.findById(req.params.id);
+    const person = await Person.findById(req.params.id)//.populate("gifts") ;
     if (person) {
-      res.send({ data: formatResponseData(person).populate("gifts") });
+      res.send({ data: formatResponseData(person)});
     } else {
       sendResourceNotFound(req, res);
     }
@@ -38,16 +38,14 @@ router.get(
 
 // Add a POST route to create a new person
 
-router.post("/", async (req, res) => {
-  console.log(req.body)
-    const newPerson = new Person(req.body);
+router.post("/", sanitize, async (req, res) => {
+    const newPerson = new Person(req.sanitizedBody);
     try {
-      console.log(newPerson)
       await newPerson.save();
       res.status(201).json({data:formatResponseData(newPerson)});
     } catch (err) {
       log.error(err);
-      res.send({
+      res.status(500).send({
         errors: [
           {
             status: 500,
@@ -65,7 +63,7 @@ const update = (overwrite = false) =>
   async (req, res) => {
     try {
       const object = await Person.findByIdAndUpdate(
-        validateID(req.params.id),
+        req.params.id,
         req.sanitizedBody,
         { new: true, overwrite, runValidators: true }
       );
@@ -105,7 +103,7 @@ router.delete(
 // validateID asynchronously validates that the ID is a valid ObjectId
 
 async function validateID(id) {
-  if (Mongoose.Types.ObjectId.isValid(id)) {
+  if (mongoose.Types.ObjectId.isValid(id)) {
     if (await Person.findById(id)) {
       return true;
     }
@@ -115,15 +113,13 @@ async function validateID(id) {
 
 function formatResponseData(payload, type = "people") {
   if (payload instanceof Array) {
-    return payload.map((resource) => {
-      format(resource);
-    });
+    return payload.map((resource) => format(resource));
   } else {
     return format(payload);
   }
 
   function format(resource) {
-    const { id, ...attributes } = resource.toObject();
+    const { _id, ...attributes } = resource.toObject();
     return { type, id: _id, attributes };
   }
 }
