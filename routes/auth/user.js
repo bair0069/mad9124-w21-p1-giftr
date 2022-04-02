@@ -5,6 +5,8 @@ import authenticate from "../../middleware/auth.js";
 import log from "../../startup/logger.js";
 import mongoose from "mongoose";
 
+//TODO: Add a patch route for updating a users password.
+
 const router = express.Router();
 
 //USERS
@@ -65,25 +67,6 @@ router.get("/users/me", authenticate, async (req, res) => {
 
 router.patch("/users/me", sanitize, authenticate, async (req, res) => {
   //ex.payload ----> { "password": "newPassword" }
-  const newUser = req.sanitizedBody.user;
-  try {
-    const { password } = req.sanitizedBody;
-    
-    newUser.password = password;
-  } catch (err) {
-    log.error(err);
-    res.status(500).send({
-      errors: [
-        {
-          status: "500",
-          title: "Server error",
-          description: err.message,
-        },
-      ],
-    });
-  }
-  await newUser.save();
-  res.json({ data: formatResponseData(user) });
 });
 
 //TOKENS

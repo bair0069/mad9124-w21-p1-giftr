@@ -2,3 +2,9 @@
 {"_message":"user validation failed","errors":{"email":{"kind":"unique","message":"","name":"ValidatorError","path":"email","properties":{"path":"email","type":"unique","value":"me@me.com"},"value":"me@me.com"}},"level":"error","message":"user validation failed: email: ","name":"ValidationError","service":"giftr"}
 {"level":"error","service":"giftr"}
 {"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
