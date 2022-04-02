@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 /**TODO:
- *  change required to true once we have a way to add an owner to a person
+ *  change required to TRUE once we have a way to add an owner to a person
  * remove the default value for imageUrl
  * // Any client supplied data for createdAt and UpdatedAt properties should be discarded.
  * */

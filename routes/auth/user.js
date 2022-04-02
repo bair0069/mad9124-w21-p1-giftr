@@ -1,10 +1,11 @@
-
-
-import express from 'express';
+import express from "express";
 import User from "../../models/User.js";
-import sanitize from '../../middleware/sanitize.js';
-import authorize from '../../middleware/auth.js';
+import sanitize from "../../middleware/sanitize.js";
+import authenticate from "../../middleware/auth.js";
+import log from "../../startup/logger.js";
+import mongoose from "mongoose";
 
+//TODO: Add a patch route for updating a users password.
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const router = express.Router();
 
 // - Add a POST route to register a user
 
-router.post('/users', sanitize, async (req, res) => {
+router.post("/users", sanitize, async (req, res) => {
   /** ex.payload ---->
 {
   "firstName": "Yo-Yo",
@@ -20,106 +21,103 @@ router.post('/users', sanitize, async (req, res) => {
   "email": "me@me.com",
   "password": "myPassword"
 }*/
-  const newUser = new User(req.sanitizedBody);
   try {
+    const newUser = new User(req.sanitizedBody);
+    const itExists = Boolean(
+      await User.countDocuments({ email: newUser.email })
+    );
+    if (itExists) {
+      return res.status(400).json({
+        errors: [
+          {
+            status: "400",
+            title: "Validation Error",
+            detail: `Email address '${newUser.email}' is already registered.`,
+            source: { pointer: "/data/attributes/email" },
+          },
+        ],
+      });
+    }
     await newUser.save();
-    res.status(201).json({ data: formatResponseData(newUser) });
+    res.status(201).json(formatResponseData(newUser));
   } catch (err) {
-    log.error(err);
+    debug(err);
     res.status(500).send({
       errors: [
         {
-          status: 500,
-          title: "Internal Server Error",
-          detail: "An error occurred while creating the user.",
+          status: "500",
+          title: "Server error",
+          description: err.message,
         },
       ],
     });
   }
-})
-
+});
 
 // - Add a GET route to get the logged in user
 
-router.get('/users/me', authorize, async (req, res) => {
+router.get("/users/me", authenticate, async (req, res) => {
+  //load the user
+  const user = await User.findById(req.user._id);
+  //redacting sensitive info send the data back to the client
+  res.json(formatResponseData(user));
+});
 
-})
+// - Add a PATCH route to update a password
 
-
-//UPDATE
-const update =
-  (overwrite = false) =>
-  async (req, res) => {
-    if (validateID(req.params.id)) {
-      try {
-        const object = await User.findByIdAndUpdate(
-          req.params.id,
-          req.sanitizedBody,
-          { new: true, overwrite, runValidators: true }
-        );
-        if (!object)
-          throw new Error("Could not find a user with id: " + req.params.id);
-        res.send({ data: formatResponseData(object) });
-      } catch (err) {
-        log.error(err);
-        sendResourceNotFound(req, res);
-      }
-    }
-  };
-
-
-// - Add a PATCH route to update a password 
-
-router.patch("/users/me", sanitize, authorize, update(false));
-//ex.payload ----> { "password": "newPassword" }
+router.patch("/users/me", sanitize, authenticate, async (req, res) => {
+  //ex.payload ----> { "password": "newPassword" }
+});
 
 //TOKENS
 
-// - Add a POST route to login a user 
-/* ex.payload ---->
+router.post("/tokens", sanitize, async (req, res) => {
+  /** ex.payload ---->
 {
   "email": "me@me.com", 
   "password": "myPassword"
 }
 */
 
+  const { email, password } = req.sanitizedBody;
+  const user = await User.authenticate(email, password);
+
+  if (!user) {
+    return res.status(401).json({
+      errors: [
+        {
+          status: "401",
+          title: "Incorrect username or password",
+        },
+      ],
+    });
+  }
+
+  // if all is good, return a token
+  res
+    .status(201)
+    .json(
+      formatResponseData({ accessToken: user.generateAuthToken() }, "tokens")
+    );
+  // if any condition failed, return an error message
+});
+
 //  Add a POST route to logout a user ????
 //HELPER FUNCTIONS
 
-// validateID asynchronously validates that the ID is a valid ObjectId
-
-async function validateID(id) {
-  if (mongoose.Types.ObjectId.isValid(id)) {
-    if (await Person.findById(id)) {
-      return true;
-    }
-  }
-  throw new sendResourceNotFound("Could not find a person with id: " + id);
-}
-
-function formatResponseData(payload, type = "people") {
+function formatResponseData(payload, type = "users") {
   if (payload instanceof Array) {
-    return payload.map((resource) => format(resource));
+    return { data: payload.map((resource) => format(resource)) };
   } else {
-    return format(payload);
+    return { data: format(payload) };
   }
 
   function format(resource) {
-    const { _id, ...attributes } = resource.toObject();
+    const { _id, ...attributes } = resource.toJSON
+      ? resource.toJSON()
+      : resource;
     return { type, id: _id, attributes };
   }
-}
-
-function sendResourceNotFound(req, res) {
-  res.status(404).send({
-    error: [
-      {
-        status: 404,
-        title: "Resource Not Found",
-        detail: `The user with ${req.params.id} was not found.`,
-      },
-    ],
-  });
 }
 
 export default router;

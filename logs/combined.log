@@ -17,3 +17,226 @@
 {"level":"info","message":"Connected to MongoDB...","service":"giftr"}
 {"level":"info","message":"Listening on port 3030","service":"giftr"}
 {"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"_message":"user validation failed","errors":{"email":{"kind":"unique","message":"","name":"ValidatorError","path":"email","properties":{"path":"email","type":"unique","value":"me@me.com"},"value":"me@me.com"}},"level":"error","message":"user validation failed: email: ","name":"ValidationError","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}

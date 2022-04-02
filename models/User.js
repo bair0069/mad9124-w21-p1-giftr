@@ -3,6 +3,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import uniqueValidator from "mongoose-unique-validator";
 import config from "config";
+import jwt from "jsonwebtoken";
 const saltRounds = config.get("jwt.saltRounds");
 const jwtSecretKey = config.get("jwt.secretKey");
 

@@ -4,7 +4,7 @@ import JWT from "jsonwebtoken";
 import config from 'config';
 
 const jwtSecretKey = config.get("jwt.secretKey");
-console.log(jwtSecretKey);
+
 
 function parseToken(headerValue) {
   // check for token if token exists,
