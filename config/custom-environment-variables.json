@@ -7,7 +7,3 @@
     "secretKey": "APP_JWTKEY"
   }
 }
-//can be checked by running `node genKey.js` in the terminal.
-//APP_DBUSER = kbam
-//APP_DBPASSWORD=mad9124@KA
-//secretKey = iot7yn427meyn6460gfmzc9he0ibgj

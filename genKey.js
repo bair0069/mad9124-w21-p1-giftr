@@ -12,3 +12,4 @@ console.log(dbConfig.userName, dbConfig.password, dbJwt.secretKey);
 console.log(config.get("db.userName"));
 console.log(config.get("db.password"));
 console.log(config.get("jwt.secretKey"));
+

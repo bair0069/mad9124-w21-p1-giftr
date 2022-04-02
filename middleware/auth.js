@@ -1,7 +1,10 @@
 // TODO:
 
 import JWT from "jsonwebtoken";
-// import { JWT_SECRET } from '../config.js';
+import config from 'config';
+
+const jwtSecretKey = config.get("jwt.secretKey");
+console.log(jwtSecretKey);
 
 function parseToken(headerValue) {
   // check for token if token exists,
@@ -32,7 +35,7 @@ export default function (req, res, next) {
   }
   // if there is a token then user is logged in
   try {
-    const decoded = JWT.verify(token, JWT_SECRET);
+    const decoded = JWT.verify(token, jwtSecretKey);
     req.user = decoded.user;
     next();
   } catch (err) {

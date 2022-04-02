@@ -4,7 +4,7 @@ import sanitizeMongo from 'express-mongo-sanitize';
 import connect from './startup/connect.js';
 import giftsRouter from './routes/gifts.js';
 import peopleRouter from './routes/people.js';
-// import authRouter from './routes/auth/user.js';
+import authRouter from './routes/auth/user.js';
 
 // connect to mongoDB
 connect();
@@ -19,7 +19,7 @@ app.use(sanitizeMongo());
 
 app.use('/api/people', peopleRouter);
 app.use('/api/gifts', giftsRouter);
-// app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 export default app;
 

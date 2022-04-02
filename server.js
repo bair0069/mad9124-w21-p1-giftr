@@ -2,8 +2,6 @@ import http from 'http'
 import app from './app.js'
 import log from './startup/logger.js'
 
-// DEBUG || WINSTON
-
 // SERVER
 const httpServer = http.createServer(app);
 // PORT

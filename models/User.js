@@ -61,7 +61,7 @@ schema.plugin(uniqueValidator, {
   message: (props) => {
     props.path === "email"
       ? `The email address '${props.value}' is already registered.`
-      : `The {props.path} must be unique. '${props.value}' is already in use.`;
+      : `The ${props.path} must be unique. '${props.value}' is already in use.`;
   },
 });
 

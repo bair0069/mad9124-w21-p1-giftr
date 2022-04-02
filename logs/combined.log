@@ -1,1 +1,19 @@
 
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"error","message":"Error connecting to MongoDB... connect ECONNREFUSED 127.0.0.1:27017","reason":{"compatible":true,"heartbeatFrequencyMS":10000,"localThresholdMS":15,"servers":{},"stale":false,"type":"Unknown"},"service":"giftr","stack":"MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017\n    at NativeConnection.Connection.openUri (/Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/node_modules/mongoose/lib/connection.js:807:32)\n    at /Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/node_modules/mongoose/lib/index.js:340:10\n    at /Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/node_modules/mongoose/lib/helpers/promiseOrCallback.js:32:5\n    at new Promise (<anonymous>)\n    at promiseOrCallback (/Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/node_modules/mongoose/lib/helpers/promiseOrCallback.js:31:10)\n    at Mongoose._promiseOrCallback (/Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/node_modules/mongoose/lib/index.js:1174:10)\n    at Mongoose.connect (/Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/node_modules/mongoose/lib/index.js:339:20)\n    at default (file:///Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/startup/connect.js:7:6)\n    at file:///Users/kieferbaird-perry/Documents/code/Algonquin/finalwithakshay/giftr/app.js:10:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:185:25)"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
