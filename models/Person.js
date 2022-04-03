@@ -6,7 +6,6 @@ import mongoose from "mongoose";
  * // Any client supplied data for createdAt and UpdatedAt properties should be discarded.
  * */
 
-
 // has to include name, birthDate,owner, sharedWith, gifts, imageUrl, and {timestamps: true}
 const schema = new mongoose.Schema(
   {
@@ -20,20 +19,22 @@ const schema = new mongoose.Schema(
     },
     // The sharedWith property takes an array of zero or more User IDs.
 
-    sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],// shared with what users?
+    sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // shared with what users?
     // The gifts property takes an array of zero or more Gift sub-documents
     gifts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Gift" }],
-    imageUrl: { type: String, required: true, maxlength: 1024, default:" "},
+    imageUrl: { type: String, required: true, maxlength: 1024, default: " " },
   },
   // The createdAt and updatedAt properties should be set automatically by the database
 
-  {strict:true,timestamps: true, versionKey: false,}
+  {
+    strict: true,
+    timestamps: true, //to set the type of createdAt and updatedAt
+    versionKey: false,
+  }
 );
 
-schema.pre('save',async function(next){
-  this.createdAt = Date.now();
-  this.updatedAt = Date.now();
-  next();
-})
+// schema.pre('save',async function(next){
+//   next();
+// })
 
 export default mongoose.model("Person", schema);
