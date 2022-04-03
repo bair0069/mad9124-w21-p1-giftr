@@ -7,7 +7,7 @@ import Person from "../models/Person.js";
 import sanitize from "../middleware/sanitize.js";
 import mongoose from "mongoose";
 // import isOwner from "../middleware/isOwner.js";
-// import auth from "../middleware/auth.js";
+import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
 const router = express.Router();
 
@@ -16,30 +16,27 @@ const router = express.Router();
 
 // Add a GET route to get all people
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const people = await Person.find();
   res.status(201).send({ data: formatResponseData(people) });
 });
 
 // Add a GET/:ID route to get a single person by ID and populate the gifts array
 
-router.get(
-  "/:id",
-  /*auth,*/ async (req, res) => {
-    if (validateID(req.params.id)) {
-      const person = await Person.findById(req.params.id); //.populate("gifts") ;
-      if (person) {
-        res.send({ data: formatResponseData(person) });
-      } else {
-        sendResourceNotFound(req, res);
-      }
+router.get("/:id", auth, async (req, res) => {
+  if (validateID(req.params.id)) {
+    const person = await Person.findById(req.params.id); //.populate("gifts") ;
+    if (person) {
+      res.send({ data: formatResponseData(person) });
+    } else {
+      sendResourceNotFound(req, res);
     }
   }
-);
+});
 
 // Add a POST route to create a new person
 
-router.post("/", sanitize, async (req, res) => {
+router.post("/", auth, sanitize, async (req, res) => {
   const newPerson = new Person(req.sanitizedBody);
   try {
     await newPerson.save();
@@ -80,17 +77,18 @@ const update =
   };
 
 // Add a PATCH route to update a person
-router.patch("/:id", sanitize, /*auth,*/ update(false));
+router.patch("/:id", auth, sanitize, update(false));
 
 // Add a PUT route to replace a person
 
-router.put("/:id", sanitize, /*auth,*/ update(true));
+router.put("/:id", auth, sanitize, update(true));
 
 // Add a route to DELETE a person (only the owner can do this)
 
 router.delete(
   "/:id",
-  /*auth,isOwner,*/ async (req, res) => {
+  auth,
+  /*isOwner,*/ async (req, res) => {
     if (validateID(req.params.id)) {
       try {
         const person = await Person.findByIdAndRemove(req.params.id);
