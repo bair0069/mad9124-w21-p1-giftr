@@ -1,8 +1,11 @@
 import express from "express";
 import User from "../../models/User.js";
 import sanitize from "../../middleware/sanitize.js";
-import authenticate from "../../middleware/auth.js";
+import auth from "../../middleware/auth.js";
 import log from "../../startup/logger.js";
+import bcrypt from "bcrypt";
+import config from "config";
+const saltRounds = config.get("jwt.saltRounds");
 import mongoose from "mongoose";
 
 //TODO: Add a patch route for updating a users password.
@@ -56,7 +59,7 @@ router.post("/users", sanitize, async (req, res) => {
 
 // - Add a GET route to get the logged in user
 
-router.get("/users/me", authenticate, async (req, res) => {
+router.get("/users/me", auth, async (req, res) => {
   //load the user
   const user = await User.findById(req.user._id);
   //redacting sensitive info send the data back to the client
@@ -65,8 +68,19 @@ router.get("/users/me", authenticate, async (req, res) => {
 
 // - Add a PATCH route to update a password
 
-router.patch("/users/me", sanitize, authenticate, async (req, res) => {
+router.patch("/users/me", auth, sanitize, async (req, res) => {
   //ex.payload ----> { "password": "newPassword" }
+  const updatedPassword = await passwordHash(req.sanitizedBody.password);
+  const object = await User.findByIdAndUpdate(
+    req.user._id,
+    { password: updatedPassword },
+    { new: true, runValidators: true }
+  );
+  if (!object) {
+    throw new Error("Unable to update password");
+  } else {
+    res.json(formatResponseData(object));
+  }
 });
 
 //TOKENS
@@ -118,6 +132,11 @@ function formatResponseData(payload, type = "users") {
       : resource;
     return { type, id: _id, attributes };
   }
+}
+
+async function passwordHash(password) {
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
 }
 
 export default router;
