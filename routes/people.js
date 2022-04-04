@@ -38,6 +38,7 @@ router.get("/:id", auth, async (req, res) => {
 
 router.post("/", auth, sanitize, async (req, res) => {
   const newPerson = new Person(req.sanitizedBody);
+  newPerson.owner = req.user._id;
   try {
     await newPerson.save();
     res.status(201).json({ data: formatResponseData(newPerson) });
