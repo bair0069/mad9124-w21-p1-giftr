@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import isOwner from "../middleware/isOwner.js";
 import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
+import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
 const router = express.Router();
 
 //The client application must send a valid JWT in the Authorization header property for all /api routes.
@@ -20,18 +21,23 @@ router.get("/", auth, async (req, res) => {
   //show only persons that were created by the user
   const people = await Person.find({ owner: req.user._id });
   // const people = await Person.find();
-  res.status(201).send({ data: formatResponseData(people) });
+  res.status(201).send(people.map((person) => formatResponseData(person)));
 });
 
 // Add a GET/:ID route to get a single person by ID and populate the gifts array
 
-router.get("/:id", auth, async (req, res) => {
-  if (validateID(req.user._id)) {
-    const person = await Person.findById(req.params.id); //.populate("gifts") ;
-    if (person) {
-      res.send({ data: formatResponseData(person) });
-    } else {
-      sendResourceNotFound(req, res);
+router.get("/:id", auth, isOwner, async (req, res, next) => {
+  if (validateID(req.params.id)) {
+    try {
+      const person = await Person.findById(req.params.id).populate("gifts");
+      if (!person) {
+        throw new ResourceNotFoundError(
+          `We could not find a person with id: ${req.params.id}`
+        );
+      }
+      res.json(formatResponseData(person));
+    } catch (error) {
+      next(error);
     }
   }
 });
@@ -110,18 +116,27 @@ async function validateID(id) {
       return true;
     }
   }
-  throw new sendResourceNotFound("Could not find a person with id: " + id);
+  throw new ResourceNotFoundError("Could not find a person with id: " + id);
 }
+
+/**
+ * Format the response data object according to JSON:API v1.0
+ * @param {string} type The resource collection name, e.g. 'cars'
+ * @param {Object | Object[]} payload An array or instance object from that collection
+ * @returns
+ */
 
 function formatResponseData(payload, type = "people") {
   if (payload instanceof Array) {
-    return payload.map((resource) => format(resource));
+    return { data: payload.map((resource) => format(resource)) };
   } else {
-    return format(payload);
+    return { data: format(payload) };
   }
 
   function format(resource) {
-    const { _id, ...attributes } = resource.toObject();
+    const { _id, ...attributes } = resource.toJSON
+      ? resource.toJSON()
+      : resource;
     return { type, id: _id, attributes };
   }
 }

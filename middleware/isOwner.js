@@ -1,20 +1,19 @@
-//TODO:
+import Person from "../models/Person.js";
+import User from "../models/User.js";
 
-import Person from '../models/Person.js';
-import User from '../models/User.js';
-
-//export default async function (req, res, next) { // define user check for ownership}
+// checks for ownership
 
 export default async function (req, res, next) {
-  const user = await User.findById(req.user._id);
-  const userId  = user._id;
+  //*TO BE DELETED
+  //we already know the user from req.user
+  // const user = await User.findById(req.user._id);
+  // const userId  = user._id;
   const person = await Person.findById(req.params.id);
   const owner = person.owner;
-  console.log(userId)
-  console.log(owner)
+  const userId = req.user._id;
 
-  if (userId.equals(owner)) {
-  next ();
+  if (userId === owner.toString()) {
+    next();
   } else {
     res.status(403).send({
       errors: [
