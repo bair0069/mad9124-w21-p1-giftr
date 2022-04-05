@@ -13,7 +13,7 @@ export default async function (req, res, next) {
   console.log(userId)
   console.log(owner)
 
-  if (userId.toString() == owner.toString()) {
+  if (userId.equals(owner)) {
   next ();
   } else {
     res.status(403).send({
