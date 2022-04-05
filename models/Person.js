@@ -15,7 +15,7 @@ const schema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: false, // <--- this should be true  - - - the owner is required
+      required: true
     },
     // The sharedWith property takes an array of zero or more User IDs.
 

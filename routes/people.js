@@ -6,7 +6,7 @@ import express from "express";
 import Person from "../models/Person.js";
 import sanitize from "../middleware/sanitize.js";
 import mongoose from "mongoose";
-// import isOwner from "../middleware/isOwner.js";
+import isOwner from "../middleware/isOwner.js";
 import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
 const router = express.Router();
@@ -38,6 +38,7 @@ router.get("/:id", auth, async (req, res) => {
 
 router.post("/", auth, sanitize, async (req, res) => {
   const newPerson = new Person(req.sanitizedBody);
+  newPerson.owner = req.user._id;
   try {
     await newPerson.save();
     res.status(201).json({ data: formatResponseData(newPerson) });
@@ -88,7 +89,7 @@ router.put("/:id", auth, sanitize, update(true));
 router.delete(
   "/:id",
   auth,
-  /*isOwner,*/ async (req, res) => {
+  isOwner, async (req, res) => {
     if (validateID(req.params.id)) {
       try {
         const person = await Person.findByIdAndRemove(req.params.id);
