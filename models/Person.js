@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import User from "../models/User.js";
+import Gift from "../models/Gift.js";
 
 /**TODO:
  *  change required to TRUE once we have a way to add an owner to a person
@@ -15,7 +17,7 @@ const schema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true
+      required: true,
     },
     // The sharedWith property takes an array of zero or more User IDs.
 

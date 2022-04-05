@@ -17,14 +17,16 @@ const router = express.Router();
 // Add a GET route to get all people
 
 router.get("/", auth, async (req, res) => {
-  const people = await Person.find();
+  //show only persons that were created by the user
+  const people = await Person.find({ owner: req.user._id });
+  // const people = await Person.find();
   res.status(201).send({ data: formatResponseData(people) });
 });
 
 // Add a GET/:ID route to get a single person by ID and populate the gifts array
 
 router.get("/:id", auth, async (req, res) => {
-  if (validateID(req.params.id)) {
+  if (validateID(req.user._id)) {
     const person = await Person.findById(req.params.id); //.populate("gifts") ;
     if (person) {
       res.send({ data: formatResponseData(person) });
@@ -86,22 +88,18 @@ router.put("/:id", auth, sanitize, update(true));
 
 // Add a route to DELETE a person (only the owner can do this)
 
-router.delete(
-  "/:id",
-  auth,
-  isOwner, async (req, res) => {
-    if (validateID(req.params.id)) {
-      try {
-        const person = await Person.findByIdAndRemove(req.params.id);
-        if (!person) throw new Error("Person not found");
-        res.send({ data: formatResponseData(person) });
-      } catch (err) {
-        log.error(err);
-        sendResourceNotFound(req, res);
-      }
+router.delete("/:id", auth, isOwner, async (req, res) => {
+  if (validateID(req.params.id)) {
+    try {
+      const person = await Person.findByIdAndRemove(req.params.id);
+      if (!person) throw new Error("Person not found");
+      res.send({ data: formatResponseData(person) });
+    } catch (err) {
+      log.error(err);
+      sendResourceNotFound(req, res);
     }
   }
-);
+});
 //HELPER FUNCTIONS
 
 // validateID asynchronously validates that the ID is a valid ObjectId
