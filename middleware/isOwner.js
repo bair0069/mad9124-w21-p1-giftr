@@ -1,5 +1,5 @@
 import Person from "../models/Person.js";
-import User from "../models/User.js";
+import Gift from "../models/Gift.js";
 
 // checks for ownership
 
