@@ -1,34 +1,32 @@
 
 import express from 'express';
 import Gift from "../models/Gift.js";
+import Person from '../models/Person.js';
 import sanitize from "../middleware/sanitize.js";
 import log from '../startup/logger.js';
+import auth from '../middleware/auth.js';
 
 //TODO:import authentication middleware , use it in the methods below
 import mongoose from 'mongoose'
+import sendResourceNotFoundException from '../exceptions/ResourceNotFound.js';
 
 const router = express.Router();
 // ***users can only interact with their own gifts***
 
 // - Add a POST route to create a new gift
 
-router.post("/", sanitize, async (req, res) => {
+router.post("/people/:id/gifts",auth, sanitize, async (req, res) => {
+  const person = await Person.findByIdAndUpdate(req.params.id);
   const newGift = new Gift(req.sanitizedBody);
   try {
-    await newGift.save();
+    await person.gifts.push(newGift);
+    console.log(person.gifts);
+    await person.save();
     res.status(201).json({ data: formatResponseData(newGift) });
   } catch (err) {
     log.error(err);
-    res.status(500).send({
-      errors: [
-        {
-          status: 500,
-          title: "Internal Server Error",
-          detail: "An error occurred while creating the gift.",
-        },
-      ],
-    });
-  }
+    next(err);
+    };
 });
 
 //UPDATE
@@ -51,21 +49,21 @@ const update = (overwrite = false) =>
 
 // - Add a PATCH route to update a gift
 
-router.patch("/:id", sanitize, update(false));
+router.patch("/:id", sanitize, auth, update(false));
 
 
 // - Add a route to DELETE a gift
 
 router.delete(
   "/:id",
-  /*auth*/ async (req, res) => {
+  auth, async (req, res) => {
     try {
       const gift = await Gift.findByIdAndRemove(req.params.id);
       if (!gift) throw new Error("Gift not found");
       res.send({ data: formatResponseData(gift) });
     } catch (err) {
       log.error(err);
-      sendResourceNotFound(req, res);
+      next(err);
     }
   }
 );

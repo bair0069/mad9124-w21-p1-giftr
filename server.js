@@ -7,7 +7,7 @@ const httpServer = http.createServer(app);
 // PORT
 const port = process.env.PORT || 3030;
 httpServer.listen(port, () => {
-  log.info(`Listening on port ${port}`);
+  console.log(`Listening on port ${port}`);
 });
 
 
