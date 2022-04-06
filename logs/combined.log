@@ -519,3 +519,15 @@
 {"level":"info","message":"Listening on port 3030","service":"giftr"}
 {"level":"info","message":"Connected to MongoDB...","service":"giftr"}
 {"code":404,"description":"Person not found","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}
+{"code":404,"description":"Could not find a Person with id: 624d992a708220f360879d49","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"level":"info","message":"Listening on port 3030","service":"giftr"}
+{"level":"info","message":"Connected to MongoDB...","service":"giftr"}

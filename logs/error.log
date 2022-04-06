@@ -13,3 +13,5 @@
 {"_message":"Person validation failed","errors":{"owner":{"kind":"required","message":"Path `owner` is required.","name":"ValidatorError","path":"owner","properties":{"message":"Path `owner` is required.","path":"owner","type":"required"}}},"level":"error","message":"Person validation failed: owner: Path `owner` is required.","name":"ValidationError","service":"giftr"}
 {"_message":"Person validation failed","errors":{"owner":{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"bill\" (type string) at path \"owner\"","name":"CastError","path":"owner","reason":{},"stringValue":"\"bill\"","value":"bill","valueType":"string"}},"level":"error","message":"Person validation failed: owner: Cast to ObjectId failed for value \"bill\" (type string) at path \"owner\"","name":"ValidationError","service":"giftr"}
 {"code":404,"description":"Person not found","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"level":"error","service":"giftr"}
+{"code":404,"description":"Could not find a Person with id: 624d992a708220f360879d49","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}

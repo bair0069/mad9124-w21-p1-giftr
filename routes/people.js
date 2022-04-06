@@ -98,17 +98,30 @@ router.put("/:id", auth, sanitize, update(true));
 router.delete("/:id", auth, async (req, res, next) => {
   const personId = req.params.id;
   const userId = req.user._id;
-  if (validateID(personId)) {
-    if (isOwner(personId, userId)) {
-      try {
-        const person = await Person.findByIdAndRemove(personId);
-        if (!person) throw new ResourceNotFoundError("Person not found");
-        res.json(formatResponseData(person));
-      } catch (err) {
-        log.error(err);
-        next(err);
+  try {
+    if (await validateID(personId)) {
+      //check if ID is valid, if the check fails throw error
+      if (await isOwner(personId, userId)) {
+        try {
+          const person = await Person.findByIdAndRemove(personId);
+          if (!person)
+            throw new ResourceNotFoundError(
+              `Could not find a Person with id: ${personId}`
+            );
+          res.json(formatResponseData(person));
+        } catch (err) {
+          log.error(err);
+          next(err);
+        }
       }
+    } else {
+      throw new ResourceNotFoundError(
+        `Could not find a Person with id: ${personId}`
+      );
     }
+  } catch (err) {
+    log.error(err);
+    next(err);
   }
 });
 
@@ -153,7 +166,7 @@ async function validateID(id) {
       return true;
     }
   }
-  throw new ResourceNotFoundError(`Could not find a Person with id: ${id}`);
+  return false;
 }
 
 async function isOwner(id, userId) {
