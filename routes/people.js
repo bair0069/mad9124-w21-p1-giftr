@@ -21,7 +21,6 @@ const router = express.Router();
 router.get("/", auth, async (req, res) => {
   //show only persons that were created by the user
   const people = await Person.find({ owner: req.user._id });
-  // const people = await Person.find();
   res.status(201).send(people.map((person) => formatResponseData(person)));
 });
 
@@ -60,35 +59,77 @@ router.post("/", auth, sanitize, async (req, res, next) => {
   }
 });
 
-//UPDATE
-const update =
-  (overwrite = false) =>
-  async (req, res) => {
-    if (validateID(req.params.id)) {
-      try {
+//TODO to be removed
+// //UPDATE
+// const update =
+//   (overwrite = false) =>
+//   async (req, res) => {
+//     if (validateID(req.params.id)) {
+//       try {
+//         const object = await Person.findByIdAndUpdate(
+//           req.params.id,
+//           req.sanitizedBody,
+//           { new: true, overwrite, runValidators: true }
+//         );
+//         if (!object)
+//           throw new Error("Could not find a person with id: " + req.params.id);
+//         res.send({ data: formatResponseData(object) });
+//       } catch (err) {
+//         log.error(err);
+//         sendResourceNotFound(req, res);
+//       }
+//     }
+//   };
+
+router.patch("/:id", auth, sanitize, async (req, res, next) => {
+  const personId = req.params.id;
+  const userId = req.user._id;
+  try {
+    if (await validateID(personId)) {
+      //check if ID is valid, if the check fails throw error
+      if (await isOwner(personId, userId)) {
         const object = await Person.findByIdAndUpdate(
-          req.params.id,
+          personId,
           req.sanitizedBody,
-          { new: true, overwrite, runValidators: true }
+          { new: true, overwrite: false, runValidators: true }
         );
-        if (!object)
-          throw new Error("Could not find a person with id: " + req.params.id);
-        res.send({ data: formatResponseData(object) });
-      } catch (err) {
-        log.error(err);
-        sendResourceNotFound(req, res);
+        res.json(formatResponseData(object));
       }
+    } else {
+      throw new ResourceNotFoundError(
+        `Could not find a Person with id: ${personId}`
+      );
     }
-  };
+  } catch (err) {
+    log.error(err);
+    next(err);
+  }
+});
 
-// Add a PATCH route to update a person
-router.patch("/:id", auth, sanitize, update(false));
-
-// Add a PUT route to replace a person
-
-router.put("/:id", auth, sanitize, update(true));
-
-// Add a route to DELETE a person (only the owner can do this)
+router.put("/:id", auth, sanitize, async (req, res, next) => {
+  const personId = req.params.id;
+  const userId = req.user._id;
+  try {
+    if (await validateID(personId)) {
+      //check if ID is valid, if the check fails throw error
+      if (await isOwner(personId, userId)) {
+        const object = await Person.findByIdAndUpdate(
+          personId,
+          { owner: userId, ...req.sanitizedBody },
+          { new: true, overwrite: true, runValidators: true }
+        );
+        res.json(formatResponseData(object));
+      }
+    } else {
+      throw new ResourceNotFoundError(
+        `Could not find a Person with id: ${personId}`
+      );
+    }
+  } catch (err) {
+    log.error(err);
+    next(err);
+  }
+});
 
 router.delete("/:id", auth, async (req, res, next) => {
   const personId = req.params.id;
