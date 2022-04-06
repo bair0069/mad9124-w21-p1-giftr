@@ -3,9 +3,7 @@ import User from "../models/User.js";
 import Gift from "../models/Gift.js";
 
 /**TODO:
- *  change required to TRUE once we have a way to add an owner to a person
  * remove the default value for imageUrl
- * // Any client supplied data for createdAt and UpdatedAt properties should be discarded.
  * */
 
 // has to include name, birthDate,owner, sharedWith, gifts, imageUrl, and {timestamps: true}
