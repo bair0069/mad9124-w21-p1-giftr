@@ -27,41 +27,36 @@ router.get("/", auth, async (req, res) => {
 
 // Add a GET/:ID route to get a single person by ID and populate the gifts array
 
-router.get("/:id", auth, isOwner, async (req, res, next) => {
-  if (validateID(req.params.id)) {
-    try {
-      const person = await Person.findById(req.params.id).populate("gifts");
-      if (!person) {
-        throw new ResourceNotFoundError(
-          `We could not find a person with id: ${req.params.id}`
-        );
+router.get("/:id", auth, async (req, res, next) => {
+  const personId = req.params.id;
+  const userId = req.user._id;
+  try {
+    if (await validateID(personId)) {
+      //will return false if not a valid ID
+      if (await isOwner(personId, userId)) {
+        const person = await Person.findById(personId).populate("gifts");
+        res.json(formatResponseData(person));
       }
-      res.json(formatResponseData(person));
-    } catch (error) {
-      next(error);
+    } else {
+      throw new ResourceNotFoundError(
+        `We could not find a person with id: ${personId}`
+      );
     }
+  } catch (err) {
+    log.error(err);
+    next(err);
   }
 });
 
-// Add a POST route to create a new person
-
-router.post("/", auth, sanitize, async (req, res) => {
+router.post("/", auth, sanitize, async (req, res, next) => {
   const newPerson = new Person(req.sanitizedBody);
   newPerson.owner = req.user._id;
   try {
     await newPerson.save();
-    res.status(201).json({ data: formatResponseData(newPerson) });
+    res.status(201).json(formatResponseData(newPerson));
   } catch (err) {
     log.error(err);
-    res.status(500).send({
-      errors: [
-        {
-          status: 500,
-          title: "Internal Server Error",
-          detail: "An error occurred while creating the person.",
-        },
-      ],
-    });
+    next(err);
   }
 });
 
@@ -102,17 +97,8 @@ router.delete("/:id", auth, async (req, res, next) => {
     if (await validateID(personId)) {
       //check if ID is valid, if the check fails throw error
       if (await isOwner(personId, userId)) {
-        try {
-          const person = await Person.findByIdAndRemove(personId);
-          if (!person)
-            throw new ResourceNotFoundError(
-              `Could not find a Person with id: ${personId}`
-            );
-          res.json(formatResponseData(person));
-        } catch (err) {
-          log.error(err);
-          next(err);
-        }
+        const person = await Person.findByIdAndRemove(personId);
+        res.json(formatResponseData(person));
       }
     } else {
       throw new ResourceNotFoundError(
