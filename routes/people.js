@@ -6,9 +6,11 @@ import express from "express";
 import Person from "../models/Person.js";
 import sanitize from "../middleware/sanitize.js";
 import mongoose from "mongoose";
-import isOwner from "../middleware/isOwner.js";
+// import isOwner from "../middleware/isOwner.js";
 import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
+import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
+// import validateID from "../middleware/validateID.js";
 const router = express.Router();
 
 //The client application must send a valid JWT in the Authorization header property for all /api routes.
@@ -17,19 +19,26 @@ const router = express.Router();
 // Add a GET route to get all people
 
 router.get("/", auth, async (req, res) => {
-  const people = await Person.find();
-  res.status(201).send({ data: formatResponseData(people) });
+  //show only persons that were created by the user
+  const people = await Person.find({ owner: req.user._id });
+  // const people = await Person.find();
+  res.status(201).send(people.map((person) => formatResponseData(person)));
 });
 
 // Add a GET/:ID route to get a single person by ID and populate the gifts array
 
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", auth, isOwner, async (req, res, next) => {
   if (validateID(req.params.id)) {
-    const person = await Person.findById(req.params.id); //.populate("gifts") ;
-    if (person) {
-      res.send({ data: formatResponseData(person) });
-    } else {
-      sendResourceNotFound(req, res);
+    try {
+      const person = await Person.findById(req.params.id).populate("gifts");
+      if (!person) {
+        throw new ResourceNotFoundError(
+          `We could not find a person with id: ${req.params.id}`
+        );
+      }
+      res.json(formatResponseData(person));
+    } catch (error) {
+      next(error);
     }
   }
 });
@@ -86,44 +95,42 @@ router.put("/:id", auth, sanitize, update(true));
 
 // Add a route to DELETE a person (only the owner can do this)
 
-router.delete(
-  "/:id",
-  auth,
-  isOwner, async (req, res) => {
-    if (validateID(req.params.id)) {
+router.delete("/:id", auth, async (req, res, next) => {
+  const personId = req.params.id;
+  const userId = req.user._id;
+  if (validateID(personId)) {
+    if (isOwner(personId, userId)) {
       try {
-        const person = await Person.findByIdAndRemove(req.params.id);
-        if (!person) throw new Error("Person not found");
-        res.send({ data: formatResponseData(person) });
+        const person = await Person.findByIdAndRemove(personId);
+        if (!person) throw new ResourceNotFoundError("Person not found");
+        res.json(formatResponseData(person));
       } catch (err) {
         log.error(err);
-        sendResourceNotFound(req, res);
+        next(err);
       }
     }
   }
-);
-//HELPER FUNCTIONS
+});
 
-// validateID asynchronously validates that the ID is a valid ObjectId
-
-async function validateID(id) {
-  if (mongoose.Types.ObjectId.isValid(id)) {
-    if (await Person.findById(id)) {
-      return true;
-    }
-  }
-  throw new sendResourceNotFound("Could not find a person with id: " + id);
-}
+//Helper functions
+/**
+ * Format the response data object according to JSON:API v1.0
+ * @param {string} type The resource collection name, e.g. 'cars'
+ * @param {Object | Object[]} payload An array or instance object from that collection
+ * @returns
+ */
 
 function formatResponseData(payload, type = "people") {
   if (payload instanceof Array) {
-    return payload.map((resource) => format(resource));
+    return { data: payload.map((resource) => format(resource)) };
   } else {
-    return format(payload);
+    return { data: format(payload) };
   }
 
   function format(resource) {
-    const { _id, ...attributes } = resource.toObject();
+    const { _id, ...attributes } = resource.toJSON
+      ? resource.toJSON()
+      : resource;
     return { type, id: _id, attributes };
   }
 }
@@ -138,6 +145,34 @@ function sendResourceNotFound(req, res) {
       },
     ],
   });
+}
+
+async function validateID(id) {
+  if (mongoose.Types.ObjectId.isValid(id)) {
+    if (await Person.findById(id)) {
+      return true;
+    }
+  }
+  throw new ResourceNotFoundError(`Could not find a Person with id: ${id}`);
+}
+
+async function isOwner(id, userId) {
+  const person = await Person.findById(id);
+  const owner = person.owner;
+
+  if (userId === owner.toString()) {
+    return true;
+  } else {
+    res.status(403).send({
+      errors: [
+        {
+          status: 403,
+          title: "Forbidden",
+          detail: "You are not authorized to perform this action.",
+        },
+      ],
+    });
+  }
 }
 
 export default router;
