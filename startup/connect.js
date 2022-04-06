@@ -8,7 +8,7 @@ export default function () {
       useNewUrlParser: true,
     })
     .then(() => {
-      log.info("Connected to MongoDB...");
+      console.log("Connected to MongoDB...");
     })
     .catch((err) => {
       log.error("Error connecting to MongoDB...", err);

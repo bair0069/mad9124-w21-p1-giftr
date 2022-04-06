@@ -19,10 +19,11 @@ app.use(sanitizeMongo());
 // ROUTES
 
 app.use("/api/people", peopleRouter);
-app.use("/api/gifts", giftsRouter);
+app.use("/api", giftsRouter);
 app.use("/auth", authRouter);
 
 //error Handler
+
 app.use(handleError);
 
 export default app;
