@@ -12,7 +12,7 @@ connect();
 // define app
 const app = express();
 
-// app.use(morgan('combined'));
+app.use(morgan("combined"));
 app.use(express.json());
 app.use(sanitizeMongo());
 
