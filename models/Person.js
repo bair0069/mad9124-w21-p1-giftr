@@ -21,7 +21,7 @@ const schema = new mongoose.Schema(
 
     sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // shared with what users?
     // The gifts property takes an array of zero or more Gift sub-documents
-    gifts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Gift" }],
+    gifts: [Gift.schema],
     imageUrl: { type: String, required: true, maxlength: 1024, default: " " },
   },
   // The createdAt and updatedAt properties should be set automatically by the database
@@ -32,9 +32,5 @@ const schema = new mongoose.Schema(
     versionKey: false,
   }
 );
-
-// schema.pre('save',async function(next){
-//   next();
-// })
 
 export default mongoose.model("Person", schema);
