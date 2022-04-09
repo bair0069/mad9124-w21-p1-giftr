@@ -6,3 +6,11 @@
 {"code":404,"description":"We could not find a person with id: 624db02a8218a3415002a152","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
 {"level":"error","service":"giftr"}
 {"code":404,"description":"Could not find a Gift with id: 6250d86d6b0b6ad9d3cfb671","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"level":"error","service":"giftr"}
+{"_message":"Person validation failed","errors":{"gifts.1.name":{"kind":"minlength","message":"Path `name` (`Toy`) is shorter than the minimum allowed length (4).","name":"ValidatorError","path":"name","properties":{"message":"Path `name` (`Toy`) is shorter than the minimum allowed length (4).","minlength":4,"path":"name","type":"minlength","value":"Toy"},"value":"Toy"},"gifts.1.price":{"kind":"min","message":"Path `price` (30) is less than minimum allowed value (100).","name":"ValidatorError","path":"price","properties":{"message":"Path `price` (30) is less than minimum allowed value (100).","min":100,"path":"price","type":"min","value":30},"value":30}},"level":"error","message":"Person validation failed: gifts.1.name: Path `name` (`Toy`) is shorter than the minimum allowed length (4)., gifts.1.price: Path `price` (30) is less than minimum allowed value (100).","name":"ValidationError","service":"giftr"}
+{"_message":"Person validation failed","errors":{"gifts.1.price":{"kind":"min","message":"Path `price` (30) is less than minimum allowed value (100).","name":"ValidatorError","path":"price","properties":{"message":"Path `price` (30) is less than minimum allowed value (100).","min":100,"path":"price","type":"min","value":30},"value":30}},"level":"error","message":"Person validation failed: gifts.1.price: Path `price` (30) is less than minimum allowed value (100).","name":"ValidationError","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}

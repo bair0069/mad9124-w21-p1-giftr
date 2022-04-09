@@ -4,8 +4,6 @@ import Person from "../models/Person.js";
 import sanitize from "../middleware/sanitize.js";
 import log from "../startup/logger.js";
 import auth from "../middleware/auth.js";
-
-//TODO:import authentication middleware , use it in the methods below
 import mongoose from "mongoose";
 import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
 
@@ -46,25 +44,26 @@ router.post("/people/:id/gifts", auth, sanitize, async (req, res, next) => {
     next(err);
   }
 });
-//TODO
+
 router.patch(
   "/people/:id/gifts/:giftId",
-  sanitize,
   auth,
+  sanitize,
   async (req, res, next) => {
     const personId = req.params.id;
     const giftId = req.params.giftId;
     const userId = req.user._id;
     try {
-      if (await validateID(giftId)) {
+      if (await validateID(personId, giftId)) {
         //check if ID is valid, if the check fails throw error
         if (await isOwner(personId, userId)) {
-          const object = await Gift.findByIdAndUpdate(
-            giftId,
-            req.sanitizedBody,
-            { new: true, overwrite: false, runValidators: true }
-          );
-          res.json(formatResponseData(object));
+          const person = await Person.findOne({
+            "gifts._id": giftId,
+          });
+          const gift = person.gifts.id(giftId);
+          gift.set(req.sanitizedBody); //solution found on StackOverflow thread response by Arian Acosta-->https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
+          await person.save();
+          res.json(formatResponseData(gift));
         } else {
           res.status(403).send({
             errors: [
@@ -90,16 +89,7 @@ router.patch(
 
 // - Add a route to DELETE a gift
 
-router.delete("/:id", auth, async (req, res) => {
-  try {
-    const gift = await Gift.findByIdAndRemove(req.params.id);
-    if (!gift) throw new Error("Gift not found");
-    res.send({ data: formatResponseData(gift) });
-  } catch (err) {
-    log.error(err);
-    next(err);
-  }
-});
+router.delete("/:id", auth, async (req, res) => {});
 
 /**
  * Format the response data object according to JSON:API v1.0
@@ -123,17 +113,33 @@ function formatResponseData(payload, type = "gift") {
   }
 }
 
-async function validateID(id) {
-  if (mongoose.Types.ObjectId.isValid(id)) {
-    if (await Person.findById(id)) {
-      return true;
+async function validateID(personId, giftId) {
+  if (!giftId) {
+    if (mongoose.Types.ObjectId.isValid(personId)) {
+      if (await Person.findById(personId)) {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    if (mongoose.Types.ObjectId.isValid(personId)) {
+      if (mongoose.Types.ObjectId.isValid(giftId)) {
+        if (
+          await Person.findOne({
+            "gifts._id": giftId,
+          })
+        )
+          return true;
+      }
+    } else {
+      return false;
     }
   }
-  return false;
 }
-//TODO
-async function isOwner(id, userId) {
-  const person = await Person.find();
+
+async function isOwner(personId, userId) {
+  const person = await Person.findById(personId);
   const owner = person.owner;
 
   if (userId === owner.toString()) {

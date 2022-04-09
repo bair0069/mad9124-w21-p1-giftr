@@ -11,7 +11,7 @@ const router = express.Router();
 router.get("/", auth, async (req, res) => {
   //show only persons that were created by the user
   const people = await Person.find({ owner: req.user._id });
-  res.status(201).send(people.map((person) => formatResponseData(person)));
+  res.status(201).json(people.map((person) => formatResponseData(person)));
 });
 
 router.get("/:id", auth, async (req, res, next) => {
