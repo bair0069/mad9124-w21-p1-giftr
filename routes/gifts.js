@@ -10,8 +10,6 @@ import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
 const router = express.Router();
 // ***users can only interact with their own gifts***
 
-// - Add a POST route to create a new gift
-
 router.post("/people/:id/gifts", auth, sanitize, async (req, res, next) => {
   const newGift = new Gift(req.sanitizedBody);
   const personId = req.params.id;
@@ -60,7 +58,7 @@ router.patch(
           const person = await Person.findOne({
             "gifts._id": giftId,
           });
-          const gift = person.gifts.id(giftId);
+          const gift = await person.gifts.id(giftId);
           gift.set(req.sanitizedBody); //solution found on StackOverflow thread response by Arian Acosta-->https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
           await person.save();
           res.json(formatResponseData(gift));
@@ -87,9 +85,42 @@ router.patch(
   }
 );
 
-// - Add a route to DELETE a gift
-
-router.delete("/:id", auth, async (req, res) => {});
+router.delete("/people/:id/gifts/:giftId", auth, async (req, res, next) => {
+  const personId = req.params.id;
+  const giftId = req.params.giftId;
+  const userId = req.user._id;
+  try {
+    if (await validateID(personId, giftId)) {
+      //check if ID is valid, if the check fails throw error
+      if (await isOwner(personId, userId)) {
+        const person = await Person.findOne({
+          "gifts._id": giftId,
+        });
+        const gift = await person.gifts.id(giftId); //saving to show the deleted gift in response
+        await person.gifts.id(giftId).remove();
+        await person.save();
+        res.json(formatResponseData(gift));
+      } else {
+        res.status(403).send({
+          errors: [
+            {
+              status: 403,
+              title: "Forbidden",
+              detail: "You are not authorized to perform this action.",
+            },
+          ],
+        });
+      }
+    } else {
+      throw new ResourceNotFoundException(
+        `Could not find a Gift with id: ${giftId}`
+      );
+    }
+  } catch (err) {
+    log.error(err);
+    next(err);
+  }
+});
 
 /**
  * Format the response data object according to JSON:API v1.0

@@ -14,3 +14,5 @@
 {"level":"error","service":"giftr"}
 {"level":"error","service":"giftr"}
 {"level":"error","service":"giftr"}
+{"code":404,"description":"Could not find a Gift with id: 62519055fd04daa37bacd658","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a Gift with id: 62519055fd04daa37bacd658","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
