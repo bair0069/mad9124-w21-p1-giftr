@@ -15,7 +15,8 @@ export default async function (req, res, next) {
             await Person.findOne({
               "gifts._id": giftId,
             })
-          ) {
+            ) {
+            console.log("validateID: true");
             next();
           }
         }
@@ -24,13 +25,16 @@ export default async function (req, res, next) {
         );
       } else {
         if (await Person.findById(personId)) {
-          next();
+        next();
         }
+        console.log("trying to find person");
       }
     }
+    else{
     throw new sendResourceNotFoundException(
       `Could not find a person with id: ${personId}`
     );
+  }
   } catch (err) {
     log.error(err);
     next(err);
