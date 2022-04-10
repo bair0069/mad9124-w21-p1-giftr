@@ -4,14 +4,14 @@ import sanitize from "../middleware/sanitize.js";
 import mongoose from "mongoose";
 import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
-import ResourceNotFoundError from "../exceptions/ResourceNotFound.js";
+import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
 
 const router = express.Router();
 
 router.get("/", auth, async (req, res) => {
   //show only persons that were created by the user
   const people = await Person.find({ owner: req.user._id });
-  res.status(201).send(people.map((person) => formatResponseData(person)));
+  res.status(201).json(people.map((person) => formatResponseData(person)));
 });
 
 router.get("/:id", auth, async (req, res, next) => {
@@ -23,9 +23,19 @@ router.get("/:id", auth, async (req, res, next) => {
       if (await isOwner(personId, userId)) {
         const person = await Person.findById(personId).populate("gifts");
         res.json(formatResponseData(person));
+      } else {
+        res.status(403).send({
+          errors: [
+            {
+              status: 403,
+              title: "Forbidden",
+              detail: "You are not authorized to perform this action.",
+            },
+          ],
+        });
       }
     } else {
-      throw new ResourceNotFoundError(
+      throw new ResourceNotFoundException(
         `We could not find a person with id: ${personId}`
       );
     }
@@ -60,9 +70,19 @@ router.patch("/:id", auth, sanitize, async (req, res, next) => {
           { new: true, overwrite: false, runValidators: true }
         );
         res.json(formatResponseData(object));
+      } else {
+        res.status(403).send({
+          errors: [
+            {
+              status: 403,
+              title: "Forbidden",
+              detail: "You are not authorized to perform this action.",
+            },
+          ],
+        });
       }
     } else {
-      throw new ResourceNotFoundError(
+      throw new ResourceNotFoundException(
         `Could not find a Person with id: ${personId}`
       );
     }
@@ -85,9 +105,19 @@ router.put("/:id", auth, sanitize, async (req, res, next) => {
           { new: true, overwrite: true, runValidators: true }
         );
         res.json(formatResponseData(object));
+      } else {
+        res.status(403).send({
+          errors: [
+            {
+              status: 403,
+              title: "Forbidden",
+              detail: "You are not authorized to perform this action.",
+            },
+          ],
+        });
       }
     } else {
-      throw new ResourceNotFoundError(
+      throw new ResourceNotFoundException(
         `Could not find a Person with id: ${personId}`
       );
     }
@@ -106,9 +136,19 @@ router.delete("/:id", auth, async (req, res, next) => {
       if (await isOwner(personId, userId)) {
         const person = await Person.findByIdAndRemove(personId);
         res.json(formatResponseData(person));
+      } else {
+        res.status(403).send({
+          errors: [
+            {
+              status: 403,
+              title: "Forbidden",
+              detail: "You are not authorized to perform this action.",
+            },
+          ],
+        });
       }
     } else {
-      throw new ResourceNotFoundError(
+      throw new ResourceNotFoundException(
         `Could not find a Person with id: ${personId}`
       );
     }
@@ -159,15 +199,7 @@ async function isOwner(id, userId) {
   if (userId === owner.toString()) {
     return true;
   } else {
-    res.status(403).send({
-      errors: [
-        {
-          status: 403,
-          title: "Forbidden",
-          detail: "You are not authorized to perform this action.",
-        },
-      ],
-    });
+    return false;
   }
 }
 
