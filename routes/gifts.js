@@ -55,15 +55,15 @@ router.post(
 
 router.patch(
   "/people/:id/gifts/:giftId",
-  auth,
+  auth,validateId,
   sanitize,
   async (req, res, next) => {
     const personId = req.params.id;
     const giftId = req.params.giftId;
     const userId = req.user._id;
     try {
-      if (await validateID(personId, giftId)) {
-        //check if ID is valid, if the check fails throw error
+      // if (await validateID(personId, giftId)) {
+      //   //check if ID is valid, if the check fails throw error
         if (
           (await isOwner(personId, userId)) ||
           (await sharedWith(personId, userId))
@@ -86,11 +86,11 @@ router.patch(
             ],
           });
         }
-      } else {
-        throw new ResourceNotFoundException(
-          `Could not find a Gift with id: ${giftId}`
-        );
-      }
+      // } else {
+      //   throw new ResourceNotFoundException(
+      //     `Could not find a Gift with id: ${giftId}`
+      //   );
+      // }
     } catch (err) {
       log.error(err);
       next(err);
