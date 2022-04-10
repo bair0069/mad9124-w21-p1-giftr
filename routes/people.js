@@ -5,39 +5,40 @@ import mongoose from "mongoose";
 import auth from "../middleware/auth.js";
 import log from "../startup/logger.js";
 import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
+import validateId from "../middleware/validateID.js";
 
 const router = express.Router();
 
 router.get("/", auth, async (req, res) => {
   //show only persons that were created by the user
-  const people = await Person.find({ owner: req.user._id });
+  const people = await Person.find().or([
+    { owner: req.user._id },
+    { sharedWith: req.user._id },
+  ]);
   res.status(201).json(people.map((person) => formatResponseData(person)));
 });
 
-router.get("/:id", auth, async (req, res, next) => {
+router.get("/:id", auth, validateId, async (req, res, next) => {
   const personId = req.params.id;
   const userId = req.user._id;
   try {
-    if (await validateID(personId)) {
-      //will return false if not a valid ID
-      if (await isOwner(personId, userId)) {
-        const person = await Person.findById(personId).populate("gifts");
-        res.json(formatResponseData(person));
-      } else {
-        res.status(403).send({
-          errors: [
-            {
-              status: 403,
-              title: "Forbidden",
-              detail: "You are not authorized to perform this action.",
-            },
-          ],
-        });
-      }
+    if (
+      (await isOwner(personId, userId)) ||
+      (await sharedWith(personId, userId))
+    ) {
+      const person = await Person.findById(personId);
+      person.depopulate("gifts");
+      res.json(formatResponseData(person));
     } else {
-      throw new ResourceNotFoundException(
-        `We could not find a person with id: ${personId}`
-      );
+      res.status(403).send({
+        errors: [
+          {
+            status: 403,
+            title: "Forbidden",
+            detail: "You are not authorized to perform this action.",
+          },
+        ],
+      });
     }
   } catch (err) {
     log.error(err);
@@ -201,6 +202,20 @@ async function isOwner(id, userId) {
   } else {
     return false;
   }
+}
+
+//check if shared with
+
+async function sharedWith(personId, userId) {
+  const person = await Person.findById(personId);
+  // console.log(person.sharedWith);
+  let isShared = false;
+  person.sharedWith.forEach((id) => {
+    if (id.toString() == userId) {
+      isShared = true;
+    }
+  });
+  return isShared;
 }
 
 export default router;
