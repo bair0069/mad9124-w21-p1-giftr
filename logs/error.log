@@ -16,3 +16,17 @@
 {"level":"error","service":"giftr"}
 {"code":404,"description":"Could not find a Gift with id: 62519055fd04daa37bacd658","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
 {"code":404,"description":"Could not find a Gift with id: 62519055fd04daa37bacd658","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"level":"error","service":"giftr"}
+{"_message":"user validation failed","errors":{"email":{"kind":"user defined","message":"a@a.a is not a valid email address.","name":"ValidatorError","path":"email","properties":{"message":"a@a.a is not a valid email address.","path":"email","type":"user defined","value":"a@a.a"},"value":"a@a.a"}},"level":"error","message":"user validation failed: email: a@a.a is not a valid email address.","name":"ValidationError","service":"giftr"}
+{"_message":"Person validation failed","errors":{"gifts.0.price":{"kind":"min","message":"Path `price` (40) is less than minimum allowed value (100).","name":"ValidatorError","path":"price","properties":{"message":"Path `price` (40) is less than minimum allowed value (100).","min":100,"path":"price","type":"min","value":40},"value":40}},"level":"error","message":"Person validation failed: gifts.0.price: Path `price` (40) is less than minimum allowed value (100).","name":"ValidationError","service":"giftr"}
+{"kind":"ObjectId","message":"Cast to ObjectId failed for value \"62533ae4d491fd7952472ce\" (type string) at path \"_id\" for model \"Person\"","name":"CastError","path":"_id","reason":{},"stringValue":"\"62533ae4d491fd7952472ce\"","value":"62533ae4d491fd7952472ce","valueType":"string"}
+{"code":404,"description":"Could not find a person with id: 62533ae4d491fd7952472ce","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 62533ae4d491fd7952472ce3","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 62533ae4d491fd7952472ce2","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":"ERR_HTTP_HEADERS_SENT","level":"error","service":"giftr"}
+{"code":404,"description":"Could not find a person with id: 62533ae4d491fd7952472ce2","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":"ERR_HTTP_HEADERS_SENT","level":"error","service":"giftr"}
+{"code":404,"description":"Could not find a person with id: 62533ae4d491fd7952472ce2","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":"ERR_HTTP_HEADERS_SENT","level":"error","service":"giftr"}
+{"code":404,"description":"Could not find a person with id: 62533ae4d491fd7952472ce2","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":"ERR_HTTP_HEADERS_SENT","level":"error","service":"giftr"}

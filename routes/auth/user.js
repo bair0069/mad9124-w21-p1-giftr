@@ -44,7 +44,7 @@ router.post("/users", sanitize, async (req, res) => {
     await newUser.save();
     res.status(201).json(formatResponseData(newUser));
   } catch (err) {
-    debug(err);
+    log.error(err);
     res.status(500).send({
       errors: [
         {

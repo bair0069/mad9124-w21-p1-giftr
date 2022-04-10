@@ -6,17 +6,26 @@ import log from "../startup/logger.js";
 import auth from "../middleware/auth.js";
 import mongoose from "mongoose";
 import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
+import validateId from "../middleware/validateID.js";
 
 const router = express.Router();
 // ***users can only interact with their own gifts***
 
-router.post("/people/:id/gifts", auth, sanitize, async (req, res, next) => {
-  const newGift = new Gift(req.sanitizedBody);
-  const personId = req.params.id;
-  const userId = req.user._id;
-  try {
-    if (await validateID(personId)) {
-      if (await isOwner(personId, userId)) {
+router.post(
+  "/people/:id/gifts",
+  auth,
+  validateId,
+  sanitize,
+  async (req, res, next) => {
+    const newGift = new Gift(req.sanitizedBody);
+    const personId = req.params.id;
+    const userId = req.user._id;
+    try {
+      // if (await validateID(personId)) {
+      if (
+        (await isOwner(personId, userId)) ||
+        (await sharedWith(personId, userId))
+      ) {
         const person = await Person.findById(personId);
         await person.gifts.push(newGift);
         await person.save();
@@ -32,16 +41,17 @@ router.post("/people/:id/gifts", auth, sanitize, async (req, res, next) => {
           ],
         });
       }
-    } else {
-      throw new ResourceNotFoundException(
-        `We could not find a person with id: ${personId}`
-      );
+      // } else {
+      //   throw new ResourceNotFoundException(
+      //     `We could not find a person with id: ${personId}`
+      //   );
+      // }
+    } catch (err) {
+      log.error(err);
+      next(err);
     }
-  } catch (err) {
-    log.error(err);
-    next(err);
   }
-});
+);
 
 router.patch(
   "/people/:id/gifts/:giftId",
@@ -54,7 +64,10 @@ router.patch(
     try {
       if (await validateID(personId, giftId)) {
         //check if ID is valid, if the check fails throw error
-        if (await isOwner(personId, userId)) {
+        if (
+          (await isOwner(personId, userId)) ||
+          (await sharedWith(personId, userId))
+        ) {
           const person = await Person.findOne({
             "gifts._id": giftId,
           });
@@ -172,11 +185,22 @@ async function validateID(personId, giftId) {
 async function isOwner(personId, userId) {
   const person = await Person.findById(personId);
   const owner = person.owner;
-
   if (userId === owner.toString()) {
     return true;
   } else {
     return false;
   }
+}
+
+async function sharedWith(personId, userId) {
+  const person = await Person.findById(personId);
+  // console.log(person.sharedWith);
+  let isShared = false;
+  person.sharedWith.forEach((id) => {
+    if (id.toString() == userId) {
+      isShared = true;
+    }
+  });
+  return isShared;
 }
 export default router;
