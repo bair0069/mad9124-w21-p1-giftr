@@ -16,7 +16,7 @@ export default async function (req, res, next) {
   const personId = req.params.id;
   // if the giftId parameters were provided use them if not set the giftId to null
   const giftId = req.params.giftId ? req.params.giftId : null;
-  
+
   // validate giftId and personId.
   try {
     // if the person id is valid
@@ -53,7 +53,7 @@ export default async function (req, res, next) {
         // if the gift id is not valid throw error 
         else {
           throw new sendResourceNotFoundException(
-            `Could not find a gift with id: ${giftId}`
+            `Invalid gift id provided: ${giftId}`
           );
         }
       }
@@ -75,7 +75,7 @@ export default async function (req, res, next) {
     // if the personId is not valid throw error
     else {
       throw new sendResourceNotFoundException(
-        `Could not find a person with id: ${personId}`
+        `Invalid person Id provided: ${personId}`
       );
     }
   } 
