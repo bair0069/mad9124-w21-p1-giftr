@@ -1,15 +1,17 @@
+//DEPENDENCIES
 import express from "express";
 import User from "../../models/User.js";
-import sanitize from "../../middleware/sanitize.js";
-import auth from "../../middleware/auth.js";
 import log from "../../startup/logger.js";
 import bcrypt from "bcrypt";
 import config from "config";
+// MIDDLEWARE
+import sanitize from "../../middleware/sanitize.js";
+import auth from "../../middleware/auth.js";
+//HELPER FUNCTIONS
+import formatResponseData from "../../helperFunctions/formatResponseData.js";
+
+
 const saltRounds = config.get("jwt.saltRounds");
-import mongoose from "mongoose";
-
-//TODO: Add a patch route for updating a users password.
-
 const router = express.Router();
 
 //USERS
@@ -79,7 +81,7 @@ router.patch("/users/me", auth, sanitize, async (req, res) => {
   if (!object) {
     throw new Error("Unable to update password");
   } else {
-    res.json(formatResponseData(object));
+    res.json(formatResponseData(object, "users"));
   }
 });
 
@@ -116,7 +118,7 @@ router.post("/tokens", sanitize, async (req, res) => {
   // if any condition failed, return an error message
 });
 
-//  Add a POST route to logout a user ????
+
 //HELPER FUNCTIONS
 
 function formatResponseData(payload, type = "users") {
