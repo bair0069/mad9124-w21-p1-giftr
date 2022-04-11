@@ -81,6 +81,7 @@ router.delete(
   validateId,
   validateAccess,
   async (req, res, next) => {
+    const person = await Person.findById(req.params.id);  
     const giftId = req.params.giftId;
     try {
       const gift = await person.gifts.id(giftId);

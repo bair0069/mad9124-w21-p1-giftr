@@ -12,11 +12,19 @@ import formatResponseData from "../../helperFunctions/formatResponseData.js";
 
 
 const saltRounds = config.get("jwt.saltRounds");
+
+/**ROUTES
+ * * //USERS
+ * post("/users") - create a new user
+ * get("/users/me") - get logged in user
+ * patch("/users/me") - update logged in user
+ * 
+ * * //TOKENS
+ * post("/tokens") - create a new token
+ */ 
 const router = express.Router();
 
 //USERS
-
-// - Add a POST route to register a user
 
 router.post("/users", sanitize, async (req, res) => {
   /** ex.payload ---->
@@ -59,16 +67,12 @@ router.post("/users", sanitize, async (req, res) => {
   }
 });
 
-// - Add a GET route to get the logged in user
-
 router.get("/users/me", auth, async (req, res) => {
   //load the user
   const user = await User.findById(req.user._id);
   //redacting sensitive info send the data back to the client
   res.json(formatResponseData(user));
 });
-
-// - Add a PATCH route to update a password
 
 router.patch("/users/me", auth, sanitize, async (req, res) => {
   //ex.payload ----> { "password": "newPassword" }
@@ -118,24 +122,7 @@ router.post("/tokens", sanitize, async (req, res) => {
   // if any condition failed, return an error message
 });
 
-
-//HELPER FUNCTIONS
-
-function formatResponseData(payload, type = "users") {
-  if (payload instanceof Array) {
-    return { data: payload.map((resource) => format(resource)) };
-  } else {
-    return { data: format(payload) };
-  }
-
-  function format(resource) {
-    const { _id, ...attributes } = resource.toJSON
-      ? resource.toJSON()
-      : resource;
-    return { type, id: _id, attributes };
-  }
-}
-
+//HELPER FUNCTIONS 
 async function passwordHash(password) {
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   return hashedPassword;
