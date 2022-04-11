@@ -16,7 +16,8 @@ export default async function (req, res, next) {
   const personId = req.params.id;
   // if the giftId parameters were provided use them if not set the giftId to null
   const giftId = req.params.giftId ? req.params.giftId : null;
-
+  
+  // validate giftId and personId.
   try {
     // if the person id is valid
     if (mongoose.Types.ObjectId.isValid(personId)) {
