@@ -7,6 +7,7 @@ import auth from "../middleware/auth.js";
 import mongoose from "mongoose";
 import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
 import validateId from "../middleware/validateID.js";
+import validateAccess from "../middleware/validateAccess.js";
 
 const router = express.Router();
 // ***users can only interact with their own gifts***
@@ -15,37 +16,19 @@ router.post(
   "/people/:id/gifts",
   auth,
   validateId,
+  validateAccess,
   sanitize,
   async (req, res, next) => {
     const newGift = new Gift(req.sanitizedBody);
     const personId = req.params.id;
     const userId = req.user._id;
     try {
-      // if (await validateID(personId)) {
-      if (
-        (await isOwner(personId, userId)) ||
-        (await sharedWith(personId, userId))
-      ) {
-        const person = await Person.findById(personId);
-        await person.gifts.push(newGift);
-        await person.save();
-        res.status(201).json(formatResponseData(newGift));
-      } else {
-        res.status(403).send({
-          errors: [
-            {
-              status: 403,
-              title: "Forbidden",
-              detail: "You are not authorized to perform this action.",
-            },
-          ],
-        });
-      }
-      // } else {
-      //   throw new ResourceNotFoundException(
-      //     `We could not find a person with id: ${personId}`
-      //   );
-      // }
+
+      const person = await Person.findById(personId);
+      await person.gifts.push(newGift);
+      await person.save();
+      res.status(201).json(formatResponseData(newGift));
+
     } catch (err) {
       log.error(err);
       next(err);
@@ -55,15 +38,15 @@ router.post(
 
 router.patch(
   "/people/:id/gifts/:giftId",
-  auth,
+  auth,validateId,
   sanitize,
   async (req, res, next) => {
     const personId = req.params.id;
     const giftId = req.params.giftId;
     const userId = req.user._id;
     try {
-      if (await validateID(personId, giftId)) {
-        //check if ID is valid, if the check fails throw error
+      // if (await validateID(personId, giftId)) {
+      //   //check if ID is valid, if the check fails throw error
         if (
           (await isOwner(personId, userId)) ||
           (await sharedWith(personId, userId))
@@ -86,11 +69,11 @@ router.patch(
             ],
           });
         }
-      } else {
-        throw new ResourceNotFoundException(
-          `Could not find a Gift with id: ${giftId}`
-        );
-      }
+      // } else {
+      //   throw new ResourceNotFoundException(
+      //     `Could not find a Gift with id: ${giftId}`
+      //   );
+      // }
     } catch (err) {
       log.error(err);
       next(err);
