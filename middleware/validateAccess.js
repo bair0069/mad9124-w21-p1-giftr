@@ -1,3 +1,5 @@
+
+
 async function isOwner(personId, userId) {
   const person = await Person.findById(personId);
   const owner = person.owner;
