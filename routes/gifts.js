@@ -1,27 +1,34 @@
 import express from "express";
+import log from "../startup/logger.js";
+
+//MODELS
 import Gift from "../models/Gift.js";
 import Person from "../models/Person.js";
+//MIDDLEWARE
 import sanitize from "../middleware/sanitize.js";
-import log from "../startup/logger.js";
 import auth from "../middleware/auth.js";
-import mongoose from "mongoose";
-import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
+
+//validateId checks if the personId, or gift id is valid.
 import validateId from "../middleware/validateID.js";
+
+//validate access checks if the user is the owner of the resource or if the person is shared with the user
 import validateAccess from "../middleware/validateAccess.js";
 
+/** How the gift router works:
+ * Owners, and Users who are in the shared list can create,update, and delete a gift for a person.
+ * router.post() - create a new gift
+ * router.patch() - update a gift
+ * router.delete() - delete a gift
+ * @
+ */
+
 const router = express.Router();
-// ***users can only interact with their own gifts***
+
 
 router.post(
-  "/people/:id/gifts",
-  auth,
-  validateId,
-  validateAccess,
-  sanitize,
-  async (req, res, next) => {
+  "/people/:id/gifts",auth,validateId,validateAccess,sanitize,async (req, res, next) => {
     const newGift = new Gift(req.sanitizedBody);
     const personId = req.params.id;
-    const userId = req.user._id;
     try {
 
       const person = await Person.findById(personId);
@@ -36,44 +43,17 @@ router.post(
   }
 );
 
-router.patch(
-  "/people/:id/gifts/:giftId",
-  auth,validateId,
-  sanitize,
-  async (req, res, next) => {
-    const personId = req.params.id;
+
+router.patch("/people/:id/gifts/:giftId",auth,sanitize,validateId,validateAccess,async (req, res, next) => {
     const giftId = req.params.giftId;
-    const userId = req.user._id;
     try {
-      // if (await validateID(personId, giftId)) {
-      //   //check if ID is valid, if the check fails throw error
-        if (
-          (await isOwner(personId, userId)) ||
-          (await sharedWith(personId, userId))
-        ) {
           const person = await Person.findOne({
             "gifts._id": giftId,
           });
           const gift = await person.gifts.id(giftId);
-          gift.set(req.sanitizedBody); //solution found on StackOverflow thread response by Arian Acosta-->https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
+          gift.set(req.sanitizedBody);
           await person.save();
           res.json(formatResponseData(gift));
-        } else {
-          res.status(403).send({
-            errors: [
-              {
-                status: 403,
-                title: "Forbidden",
-                detail: "You are not authorized to perform this action.",
-              },
-            ],
-          });
-        }
-      // } else {
-      //   throw new ResourceNotFoundException(
-      //     `Could not find a Gift with id: ${giftId}`
-      //   );
-      // }
     } catch (err) {
       log.error(err);
       next(err);
@@ -81,37 +61,13 @@ router.patch(
   }
 );
 
-router.delete("/people/:id/gifts/:giftId", auth, async (req, res, next) => {
-  const personId = req.params.id;
+router.delete("/people/:id/gifts/:giftId", auth,validateId,validateAccess, async (req, res, next) => {
   const giftId = req.params.giftId;
-  const userId = req.user._id;
   try {
-    if (await validateID(personId, giftId)) {
-      //check if ID is valid, if the check fails throw error
-      if (await isOwner(personId, userId)) {
-        const person = await Person.findOne({
-          "gifts._id": giftId,
-        });
-        const gift = await person.gifts.id(giftId); //saving to show the deleted gift in response
+        const gift = await person.gifts.id(giftId);
         await person.gifts.id(giftId).remove();
         await person.save();
         res.json(formatResponseData(gift));
-      } else {
-        res.status(403).send({
-          errors: [
-            {
-              status: 403,
-              title: "Forbidden",
-              detail: "You are not authorized to perform this action.",
-            },
-          ],
-        });
-      }
-    } else {
-      throw new ResourceNotFoundException(
-        `Could not find a Gift with id: ${giftId}`
-      );
-    }
   } catch (err) {
     log.error(err);
     next(err);
@@ -140,50 +96,5 @@ function formatResponseData(payload, type = "gift") {
   }
 }
 
-async function validateID(personId, giftId) {
-  if (!giftId) {
-    if (mongoose.Types.ObjectId.isValid(personId)) {
-      if (await Person.findById(personId)) {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  } else {
-    if (mongoose.Types.ObjectId.isValid(personId)) {
-      if (mongoose.Types.ObjectId.isValid(giftId)) {
-        if (
-          await Person.findOne({
-            "gifts._id": giftId,
-          })
-        )
-          return true;
-      }
-    } else {
-      return false;
-    }
-  }
-}
 
-async function isOwner(personId, userId) {
-  const person = await Person.findById(personId);
-  const owner = person.owner;
-  if (userId === owner.toString()) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-async function sharedWith(personId, userId) {
-  const person = await Person.findById(personId);
-  // console.log(person.sharedWith);
-  let isShared = false;
-  person.sharedWith.forEach((id) => {
-    if (id.toString() == userId) {
-      isShared = true;
-    }
-  });
-  return isShared;
-}
 export default router;
