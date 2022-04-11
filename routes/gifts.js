@@ -23,16 +23,13 @@ import validateAccess from "../middleware/validateAccess.js";
  */
 import formatResponseData from "../helperFunctions/formatResponseData.js";
 
-//ROUTES
-const router = express.Router();
-
-/** How the gift routes work:
+/**ROUTES
  * Owners, and Users who are in the shared list can create,update, and delete a gift for a person.
  * router.post() - create a new gift
  * router.patch() - update a gift
  * router.delete() - delete a gift
- * @
- */
+ */ 
+const router = express.Router();
 
 router.post(
   "/people/:id/gifts",
