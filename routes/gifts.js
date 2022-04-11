@@ -1,16 +1,35 @@
+//DEPENDENCIES
 import express from "express";
+import log from "../startup/logger.js";
+/**MODELS
+ * Person is the model for a person
+ * Gift is the model for a gift
+ */
 import Gift from "../models/Gift.js";
 import Person from "../models/Person.js";
+/**MIDDLEWARE
+ *sanitize removes script tags from the request body
+ *auth checks the users token
+ *validateId checks if the personId, or gift id is valid.
+ *validateAccess checks if the user is the owner of the resource or if the person is shared with the user
+ */
 import sanitize from "../middleware/sanitize.js";
-import log from "../startup/logger.js";
 import auth from "../middleware/auth.js";
-import mongoose from "mongoose";
-import ResourceNotFoundException from "../exceptions/ResourceNotFound.js";
 import validateId from "../middleware/validateID.js";
 import validateAccess from "../middleware/validateAccess.js";
+/**HELPER FUNCTIONS
+ *formatResponseData(payload,type)
+ *formats the response data to be returned
+ */
+import formatResponseData from "../helperFunctions/formatResponseData.js";
 
+/**ROUTES
+ * Owners, and Users who are in the shared list can create,update, and delete a gift for a person.
+ * router.post() - create a new gift
+ * router.patch() - update a gift
+ * router.delete() - delete a gift
+ */ 
 const router = express.Router();
-// ***users can only interact with their own gifts***
 
 router.post(
   "/people/:id/gifts",
@@ -21,14 +40,11 @@ router.post(
   async (req, res, next) => {
     const newGift = new Gift(req.sanitizedBody);
     const personId = req.params.id;
-    const userId = req.user._id;
     try {
-
       const person = await Person.findById(personId);
       await person.gifts.push(newGift);
       await person.save();
-      res.status(201).json(formatResponseData(newGift));
-
+      res.status(201).json(formatResponseData(newGift, "gifts"));
     } catch (err) {
       log.error(err);
       next(err);
@@ -38,42 +54,20 @@ router.post(
 
 router.patch(
   "/people/:id/gifts/:giftId",
-  auth,validateId,
+  auth,
   sanitize,
+  validateId,
+  validateAccess,
   async (req, res, next) => {
-    const personId = req.params.id;
     const giftId = req.params.giftId;
-    const userId = req.user._id;
     try {
-      // if (await validateID(personId, giftId)) {
-      //   //check if ID is valid, if the check fails throw error
-        if (
-          (await isOwner(personId, userId)) ||
-          (await sharedWith(personId, userId))
-        ) {
-          const person = await Person.findOne({
-            "gifts._id": giftId,
-          });
-          const gift = await person.gifts.id(giftId);
-          gift.set(req.sanitizedBody); //solution found on StackOverflow thread response by Arian Acosta-->https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
-          await person.save();
-          res.json(formatResponseData(gift));
-        } else {
-          res.status(403).send({
-            errors: [
-              {
-                status: 403,
-                title: "Forbidden",
-                detail: "You are not authorized to perform this action.",
-              },
-            ],
-          });
-        }
-      // } else {
-      //   throw new ResourceNotFoundException(
-      //     `Could not find a Gift with id: ${giftId}`
-      //   );
-      // }
+      const person = await Person.findOne({
+        "gifts._id": giftId,
+      });
+      const gift = await person.gifts.id(giftId);
+      gift.set(req.sanitizedBody);
+      await person.save();
+      res.json(formatResponseData(gift, "gifts"));
     } catch (err) {
       log.error(err);
       next(err);
@@ -81,109 +75,23 @@ router.patch(
   }
 );
 
-router.delete("/people/:id/gifts/:giftId", auth, async (req, res, next) => {
-  const personId = req.params.id;
-  const giftId = req.params.giftId;
-  const userId = req.user._id;
-  try {
-    if (await validateID(personId, giftId)) {
-      //check if ID is valid, if the check fails throw error
-      if (await isOwner(personId, userId)) {
-        const person = await Person.findOne({
-          "gifts._id": giftId,
-        });
-        const gift = await person.gifts.id(giftId); //saving to show the deleted gift in response
-        await person.gifts.id(giftId).remove();
-        await person.save();
-        res.json(formatResponseData(gift));
-      } else {
-        res.status(403).send({
-          errors: [
-            {
-              status: 403,
-              title: "Forbidden",
-              detail: "You are not authorized to perform this action.",
-            },
-          ],
-        });
-      }
-    } else {
-      throw new ResourceNotFoundException(
-        `Could not find a Gift with id: ${giftId}`
-      );
-    }
-  } catch (err) {
-    log.error(err);
-    next(err);
-  }
-});
-
-/**
- * Format the response data object according to JSON:API v1.0
- * @param {string} type The resource collection name, e.g. 'cars'
- * @param {Object | Object[]} payload An array or instance object from that collection
- * @returns
- */
-
-function formatResponseData(payload, type = "gift") {
-  if (payload instanceof Array) {
-    return { data: payload.map((resource) => format(resource)) };
-  } else {
-    return { data: format(payload) };
-  }
-
-  function format(resource) {
-    const { _id, ...attributes } = resource.toJSON
-      ? resource.toJSON()
-      : resource;
-    return { type, id: _id, attributes };
-  }
-}
-
-async function validateID(personId, giftId) {
-  if (!giftId) {
-    if (mongoose.Types.ObjectId.isValid(personId)) {
-      if (await Person.findById(personId)) {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  } else {
-    if (mongoose.Types.ObjectId.isValid(personId)) {
-      if (mongoose.Types.ObjectId.isValid(giftId)) {
-        if (
-          await Person.findOne({
-            "gifts._id": giftId,
-          })
-        )
-          return true;
-      }
-    } else {
-      return false;
+router.delete(
+  "/people/:id/gifts/:giftId",
+  auth,
+  validateId,
+  validateAccess,
+  async (req, res, next) => {
+    const person = await Person.findById(req.params.id);  
+    const giftId = req.params.giftId;
+    try {
+      const gift = await person.gifts.id(giftId);
+      await person.gifts.id(giftId).remove();
+      await person.save();
+      res.json(formatResponseData(gift, "gifts"));
+    } catch (err) {
+      log.error(err);
+      next(err);
     }
   }
-}
-
-async function isOwner(personId, userId) {
-  const person = await Person.findById(personId);
-  const owner = person.owner;
-  if (userId === owner.toString()) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-async function sharedWith(personId, userId) {
-  const person = await Person.findById(personId);
-  // console.log(person.sharedWith);
-  let isShared = false;
-  person.sharedWith.forEach((id) => {
-    if (id.toString() == userId) {
-      isShared = true;
-    }
-  });
-  return isShared;
-}
+);
 export default router;

@@ -56,3 +56,23 @@
 {"code":"ERR_HTTP_HEADERS_SENT","level":"error","service":"giftr"}
 {"level":"error","service":"giftr"}
 {"code":404,"description":"Could not find a gift with id: 6253610857492bdaa8af525f","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"_message":"Person validation failed","errors":{"birthDate":{"kind":"date","message":"Cast to date failed for value \"20/20/20\" (type string) at path \"birthDate\"","name":"CastError","path":"birthDate","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"20/20/20\"","value":"20/20/20","valueType":"string"}},"level":"error","message":"Person validation failed: birthDate: Cast to date failed for value \"20/20/20\" (type string) at path \"birthDate\"","name":"ValidationError","service":"giftr"}
+{"_message":"Person validation failed","errors":{"birthDate":{"kind":"date","message":"Cast to date failed for value \"20/20/2020\" (type string) at path \"birthDate\"","name":"CastError","path":"birthDate","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"20/20/2020\"","value":"20/20/2020","valueType":"string"}},"level":"error","message":"Person validation failed: birthDate: Cast to date failed for value \"20/20/2020\" (type string) at path \"birthDate\"","name":"ValidationError","service":"giftr"}
+{"_message":"Person validation failed","errors":{"birthDate":{"kind":"date","message":"Cast to date failed for value \"20/12/2020\" (type string) at path \"birthDate\"","name":"CastError","path":"birthDate","reason":{"actual":false,"code":"ERR_ASSERTION","expected":true,"generatedMessage":true,"operator":"=="},"stringValue":"\"20/12/2020\"","value":"20/12/2020","valueType":"string"}},"level":"error","message":"Person validation failed: birthDate: Cast to date failed for value \"20/12/2020\" (type string) at path \"birthDate\"","name":"ValidationError","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"level":"error","service":"giftr"}
+{"code":404,"description":"Could not find a person with id: 624b946be7a261c352ec7ff4","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 624b946be7a261c352ec7ff","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Invalid person Id provided: 624b946be7a261c352ec7ff","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Invalid gift id provided: 6253bb48e136bff53c954d2","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a gift with id: 6253bb48e136bff53c954d2d in gift list of person with id: 624b946be7a261c352ec7ff5","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a Person with id: 624b946be7a261c352ec7ff5","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a Person with id: 624b946be7a261c352ec7ff","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a Person with id: 624b946be7a261c352ec7ff4","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a Person with id: 624b946be7a261c352ec7ff45","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Invalid person Id provided: 624b946ce7a261c352ec7ff","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 624b946ce7a261c352ec7ff5","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Invalid person Id provided: 624b946ce7a261c352ec7ff","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 624b946ce7a261c352ec7ff5","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Invalid person Id provided: 624b946be7a261c352ec7ff","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 624b946be7a261c352ec7ff7","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
