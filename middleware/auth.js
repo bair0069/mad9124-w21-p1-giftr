@@ -21,6 +21,7 @@ function parseToken(headerValue) {
 export default function (req, res, next) {
   // if there is no token then user is not logged in send them to login page
   const token = parseToken(req.header("Authorization"));
+  const api = req.header("x-api-key");
   if (!token) {
     return res.status(401).send({
       errors: [
@@ -31,12 +32,34 @@ export default function (req, res, next) {
         },
       ],
     });
+  } else if (!api) {
+    return res.status(401).send({
+      errors: [
+        {
+          status: 401,
+          title: "Not Authorized",
+          detail: "You must have an approved api key to perform this action.",
+        },
+      ],
+    });
   }
   // if there is a token then user is logged in
   try {
     const decoded = JWT.verify(token, jwtSecretKey, { algorithms: ["HS256"] });
-    req.user = decoded.user;
-    next();
+    if (api.toString() === "maha0134") {
+      req.user = decoded.user;
+      next();
+    } else {
+      res.status(401).send({
+        errors: [
+          {
+            status: 401,
+            title: "Not Authorized",
+            detail: "You must have an approved api key to perform this action.",
+          },
+        ],
+      });
+    }
   } catch (err) {
     return res.status(401).send({
       errors: [
