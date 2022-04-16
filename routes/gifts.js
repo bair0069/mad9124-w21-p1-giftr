@@ -13,6 +13,7 @@ import Person from "../models/Person.js";
  *validateId checks if the personId, or gift id is valid.
  *validateAccess checks if the user is the owner of the resource or if the person is shared with the user
  */
+import checkHeader from "../middleware/checkHeader.js";
 import sanitize from "../middleware/sanitize.js";
 import auth from "../middleware/auth.js";
 import validateId from "../middleware/validateID.js";
@@ -28,11 +29,12 @@ import formatResponseData from "../helperFunctions/formatResponseData.js";
  * router.post() - create a new gift
  * router.patch() - update a gift
  * router.delete() - delete a gift
- */ 
+ */
 const router = express.Router();
 
 router.post(
   "/people/:id/gifts",
+  checkHeader,
   auth,
   validateId,
   validateAccess,
@@ -54,6 +56,7 @@ router.post(
 
 router.patch(
   "/people/:id/gifts/:giftId",
+  checkHeader,
   auth,
   sanitize,
   validateId,
@@ -77,11 +80,12 @@ router.patch(
 
 router.delete(
   "/people/:id/gifts/:giftId",
+  checkHeader,
   auth,
   validateId,
   validateAccess,
   async (req, res, next) => {
-    const person = await Person.findById(req.params.id);  
+    const person = await Person.findById(req.params.id);
     const giftId = req.params.giftId;
     try {
       const gift = await person.gifts.id(giftId);

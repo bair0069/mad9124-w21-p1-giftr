@@ -5,11 +5,11 @@ import log from "../../startup/logger.js";
 import bcrypt from "bcrypt";
 import config from "config";
 // MIDDLEWARE
+import checkHeader from "../../middleware/checkHeader.js";
 import sanitize from "../../middleware/sanitize.js";
 import auth from "../../middleware/auth.js";
 //HELPER FUNCTIONS
 import formatResponseData from "../../helperFunctions/formatResponseData.js";
-
 
 const saltRounds = config.get("jwt.saltRounds");
 
@@ -18,15 +18,15 @@ const saltRounds = config.get("jwt.saltRounds");
  * post("/users") - create a new user
  * get("/users/me") - get logged in user
  * patch("/users/me") - update logged in user
- * 
+ *
  * * //TOKENS
  * post("/tokens") - create a new token
- */ 
+ */
 const router = express.Router();
 
 //USERS
 
-router.post("/users", sanitize, async (req, res) => {
+router.post("/users", checkHeader, sanitize, async (req, res) => {
   /** ex.payload ---->
 {
   "firstName": "Yo-Yo",
@@ -67,14 +67,14 @@ router.post("/users", sanitize, async (req, res) => {
   }
 });
 
-router.get("/users/me", auth, async (req, res) => {
+router.get("/users/me", checkHeader, auth, async (req, res) => {
   //load the user
   const user = await User.findById(req.user._id);
   //redacting sensitive info send the data back to the client
   res.json(formatResponseData(user));
 });
 
-router.patch("/users/me", auth, sanitize, async (req, res) => {
+router.patch("/users/me", checkHeader, auth, sanitize, async (req, res) => {
   //ex.payload ----> { "password": "newPassword" }
   const updatedPassword = await passwordHash(req.sanitizedBody.password);
   const object = await User.findByIdAndUpdate(
@@ -91,7 +91,7 @@ router.patch("/users/me", auth, sanitize, async (req, res) => {
 
 //TOKENS
 
-router.post("/tokens", sanitize, async (req, res) => {
+router.post("/tokens", checkHeader, sanitize, async (req, res) => {
   /** ex.payload ---->
 {
   "email": "me@me.com", 
@@ -122,7 +122,7 @@ router.post("/tokens", sanitize, async (req, res) => {
   // if any condition failed, return an error message
 });
 
-//HELPER FUNCTIONS 
+//HELPER FUNCTIONS
 async function passwordHash(password) {
   const hashedPassword = await bcrypt.hash(password, saltRounds);
   return hashedPassword;
