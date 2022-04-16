@@ -10,6 +10,7 @@ import Person from "../models/Person.js";
  * validateAccess checks if the user is the owner of the resource or if the person is shared with the user
  *
  */
+import checkHeader from "../middleware/checkHeader.js";
 import sanitize from "../middleware/sanitize.js";
 import auth from "../middleware/auth.js";
 import validateId from "../middleware/validateID.js";
@@ -31,29 +32,35 @@ import log from "../startup/logger.js";
  */
 const router = express.Router();
 
-router.get("/", auth, async (req, res) => {
+router.get("/", checkHeader, auth, async (req, res) => {
   //show only persons that were created by the user
-  const people = await Person.find().or([
-    { owner: req.user._id },
-    { sharedWith: req.user._id },
-  ]).select("-gifts");
+  const people = await Person.find()
+    .or([{ owner: req.user._id }, { sharedWith: req.user._id }])
+    .select("-gifts");
   res
     .status(201)
     .json(people.map((person) => formatResponseData(person, "people")));
 });
 
-router.get("/:id", auth, validateId, validateAccess, async (req, res, next) => {
-  const personId = req.params.id;
-  try {
-    const person = await Person.findById(personId);
-    res.json(formatResponseData(person, "people"));
-  } catch (err) {
-    log.error(err);
-    next(err);
+router.get(
+  "/:id",
+  checkHeader,
+  auth,
+  validateId,
+  validateAccess,
+  async (req, res, next) => {
+    const personId = req.params.id;
+    try {
+      const person = await Person.findById(personId);
+      res.json(formatResponseData(person, "people"));
+    } catch (err) {
+      log.error(err);
+      next(err);
+    }
   }
-});
+);
 
-router.post("/", auth, sanitize, async (req, res, next) => {
+router.post("/", checkHeader, auth, sanitize, async (req, res, next) => {
   const newPerson = new Person(req.sanitizedBody);
   newPerson.owner = req.user._id;
   try {
@@ -67,6 +74,7 @@ router.post("/", auth, sanitize, async (req, res, next) => {
 
 router.patch(
   "/:id",
+  checkHeader,
   auth,
   sanitize,
   validateId,
@@ -89,6 +97,7 @@ router.patch(
 
 router.put(
   "/:id",
+  checkHeader,
   auth,
   sanitize,
   validateId,
@@ -112,6 +121,7 @@ router.put(
 
 router.delete(
   "/:id",
+  checkHeader,
   auth,
   validateId,
   validateAccess,
