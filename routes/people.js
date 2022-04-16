@@ -36,7 +36,7 @@ router.get("/", auth, async (req, res) => {
   const people = await Person.find().or([
     { owner: req.user._id },
     { sharedWith: req.user._id },
-  ]);
+  ]).select("-gifts");
   res
     .status(201)
     .json(people.map((person) => formatResponseData(person, "people")));
