@@ -13,27 +13,11 @@ import formatResponseData from "../../helperFunctions/formatResponseData.js";
 
 const saltRounds = config.get("jwt.saltRounds");
 
-/**ROUTES
- * * //USERS
- * post("/users") - create a new user
- * get("/users/me") - get logged in user
- * patch("/users/me") - update logged in user
- *
- * * //TOKENS
- * post("/tokens") - create a new token
- */
 const router = express.Router();
 
 //USERS
 
 router.post("/users", checkHeader, sanitize, async (req, res) => {
-  /** ex.payload ---->
-{
-  "firstName": "Yo-Yo",
-  "lastName": "Ma",
-  "email": "me@me.com",
-  "password": "myPassword"
-}*/
   try {
     const newUser = new User(req.sanitizedBody);
     const itExists = Boolean(
@@ -75,7 +59,6 @@ router.get("/users/me", checkHeader, auth, async (req, res) => {
 });
 
 router.patch("/users/me", checkHeader, auth, sanitize, async (req, res) => {
-  //ex.payload ----> { "password": "newPassword" }
   const updatedPassword = await passwordHash(req.sanitizedBody.password);
   const object = await User.findByIdAndUpdate(
     req.user._id,
@@ -92,13 +75,6 @@ router.patch("/users/me", checkHeader, auth, sanitize, async (req, res) => {
 //TOKENS
 
 router.post("/tokens", checkHeader, sanitize, async (req, res) => {
-  /** ex.payload ---->
-{
-  "email": "me@me.com", 
-  "password": "myPassword"
-}
-*/
-
   const { email, password } = req.sanitizedBody;
   const user = await User.authenticate(email, password);
 
