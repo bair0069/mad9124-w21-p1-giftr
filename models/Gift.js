@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-// has to include name, price, imageUrl, store, store.name, store.productUrl
 const schema = new mongoose.Schema({
   name: { type: String, required: true, maxlength: 64, minlength: 4 },
   price: { type: Number, min: 100, default: 1000 },

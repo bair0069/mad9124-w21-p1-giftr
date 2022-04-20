@@ -8,7 +8,7 @@ const sanitize = (sourceString) => {
 };
 
 const stripTags = (payload) => {
-  const attributes = Object.assign({}, payload); // { ...payload }
+  const attributes = Object.assign({}, payload);
 
   for (let key in attributes) {
     if (attributes[key] instanceof Array) {
