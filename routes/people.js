@@ -3,13 +3,7 @@ import express from "express";
 //MODELS
 import Person from "../models/Person.js";
 
-/**MIDDLEWARE
- * sanitize removes script tags from the request body
- * auth checks the users token
- * validateId checks if the personId, or gift id is valid.
- * validateAccess checks if the user is the owner of the resource or if the person is shared with the user
- *
- */
+//MIDDLEWARE
 import checkHeader from "../middleware/checkHeader.js";
 import sanitize from "../middleware/sanitize.js";
 import auth from "../middleware/auth.js";
@@ -21,16 +15,7 @@ import allowDelete from "../middleware/allowDelete.js";
 import formatResponseData from "../helperFunctions/formatResponseData.js";
 import log from "../startup/logger.js";
 
-/**ROUTES
- * router.get() - get all people created by user
- * router.get() - get a person by id
- * router.post() - create a new person
- *
- **** ONLY OWNERS CAN UPDATE AND DELETE PEOPLE**
- * router.patch() - update a person
- * router.put() - replace a person
- * router.delete() - delete a person
- */
+//ROUTES
 const router = express.Router();
 
 router.get("/", checkHeader, auth, async (req, res) => {

@@ -130,3 +130,4 @@
 {"code":404,"description":"Could not find a gift with id: 625f1c7ed21f967c02594abc in gift list of person with id: 625f0881d21f967c02594a82","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
 {"code":404,"description":"Could not find a gift with id: 625f1c7ed21f967c02594abc in gift list of person with id: 625f0881d21f967c02594a82","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
 {"code":404,"description":"Could not find a person with id: 625488d6404152ee65c5d3a8","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}
+{"code":404,"description":"Could not find a person with id: 625f4dfcd21f967c02594bd0","level":"error","service":"giftr","status":"404","title":"Resource does not exist"}

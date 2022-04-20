@@ -1,18 +1,10 @@
 //DEPENDENCIES
 import express from "express";
 import log from "../startup/logger.js";
-/**MODELS
- * Person is the model for a person
- * Gift is the model for a gift
- */
+//MODELS
 import Gift from "../models/Gift.js";
 import Person from "../models/Person.js";
-/**MIDDLEWARE
- *sanitize removes script tags from the request body
- *auth checks the users token
- *validateId checks if the personId, or gift id is valid.
- *validateAccess checks if the user is the owner of the resource or if the person is shared with the user
- */
+//Middleware
 import checkHeader from "../middleware/checkHeader.js";
 import sanitize from "../middleware/sanitize.js";
 import auth from "../middleware/auth.js";
@@ -20,18 +12,10 @@ import validateId from "../middleware/validateID.js";
 import validateAccess from "../middleware/validateAccess.js";
 import allowDelete from "../middleware/allowDelete.js";
 
-/**HELPER FUNCTIONS
- *formatResponseData(payload,type)
- *formats the response data to be returned
- */
+//HELPER FUNCTIONS
 import formatResponseData from "../helperFunctions/formatResponseData.js";
 
-/**ROUTES
- * Owners, and Users who are in the shared list can create,update, and delete a gift for a person.
- * router.post() - create a new gift
- * router.patch() - update a gift
- * router.delete() - delete a gift
- */
+//ROUTES
 const router = express.Router();
 
 router.post(
