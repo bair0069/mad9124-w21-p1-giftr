@@ -18,6 +18,8 @@ import sanitize from "../middleware/sanitize.js";
 import auth from "../middleware/auth.js";
 import validateId from "../middleware/validateID.js";
 import validateAccess from "../middleware/validateAccess.js";
+import allowDelete from "../middleware/allowDelete.js";
+
 /**HELPER FUNCTIONS
  *formatResponseData(payload,type)
  *formats the response data to be returned
@@ -83,7 +85,7 @@ router.delete(
   checkHeader,
   auth,
   validateId,
-  validateAccess,
+  allowDelete,
   async (req, res, next) => {
     const person = await Person.findById(req.params.id);
     const giftId = req.params.giftId;

@@ -15,6 +15,7 @@ import sanitize from "../middleware/sanitize.js";
 import auth from "../middleware/auth.js";
 import validateId from "../middleware/validateID.js";
 import validateAccess from "../middleware/validateAccess.js";
+import allowDelete from "../middleware/allowDelete.js";
 
 //HELPER FUNCTIONS
 import formatResponseData from "../helperFunctions/formatResponseData.js";
@@ -124,7 +125,7 @@ router.delete(
   checkHeader,
   auth,
   validateId,
-  validateAccess,
+  allowDelete,
   async (req, res, next) => {
     const personId = req.params.id;
     try {
